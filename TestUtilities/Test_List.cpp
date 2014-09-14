@@ -3,16 +3,22 @@
 #include "List.h"
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
-#define uint unsigned int
+#define uint unsigned int // Im lazy.
 
 namespace TestUtilities
 {
 	TEST_CLASS(Test_List)
 	{
 	public:
+    Test_List() 
+    {
+      Logger::WriteMessage("Starting...");
+    }
+    
     
     TEST_METHOD_INITIALIZE(SetUp)
     {
+      Logger::WriteMessage("Setup.");
       myIntList.Init(5, 5);
       myObjectList.Init(5, 5);
       myObjectPointerList.Init(5, 5);
@@ -21,7 +27,7 @@ namespace TestUtilities
 
     TEST_METHOD_CLEANUP(Destroy)
     {
-      
+      Logger::WriteMessage("Destroy.");
     }
 
     /*Functions to test:
@@ -53,56 +59,59 @@ namespace TestUtilities
     const CountType& Capacity() const;
     const CountType& GrowSize() const;
     */
+    
+    
 
-		
 
-		TEST_METHOD(Initialization)
-		{
-      Assert::AreEqual<int>(myIntList.GrowSize(), myIntList.Capacity(), L"The GrowSize and Capacity of the List was not the same.");
-		}
+    TEST_METHOD(Initialization)
+    {
+      Logger::WriteMessage("Initialization test.");
+      // Test Size, Capacity, GrowRate.
+      Assert::AreEqual(myIntList.Count(), (uint)0, L"Size was larger than 0.");
+      Assert::AreEqual(myIntList.Capacity(), (uint)5, L"Capacity was not 5.");
+      Assert::AreEqual(myIntList.GrowRate(), (uint)5, L"GrowRate was not 5.");
+    }
 
     TEST_METHOD(ReInitialization)
     {
-      myIntList.ReInit(10, 5);
-      Assert::AreNotEqual<int>(myIntList.GrowSize(), myIntList.Capacity(), L"The GrowSize and Capacity of the List was not the same.");
-      Assert::AreEqual<int>(myIntList.GrowSize(), 5, L"The GrowSize where not set to 5 by ReInit.");
+      Logger::WriteMessage("Reinitialization test.");
+      myIntList.ReInit(5, 5);
+      // Test Size, Capacity, GrowRate.
+      Assert::AreEqual(myIntList.Count(), (uint)0, L"Size was larger than 0.");
+      Assert::AreEqual(myIntList.Capacity(), (uint)5, L"Capacity was not 5.");
+      Assert::AreEqual(myIntList.GrowRate(), (uint)5, L"GrowRate was not 5.");
     }
 
     TEST_METHOD(Add)
     {
-      for (short i = 0; i < 5; i++) {
+      Logger::WriteMessage("Add test.");
+      // Test adding primitives, objects and pointers to the lists.
+      for (unsigned short i = 0; i < 5; i++) {
         myIntList.Add(i);
-        TestObject t;
-        t.Init(i);
-        myObjectList.Add(t);
-        myObjectPointerList.Add(new TestObject(i + 5));
         myStringList.Add(std::to_string(i));
-        // Test for each loop.
-        Assert::AreEqual<int>(myIntList.Count(), i + 1, L"Added data to the lists, but the count where not increased.");
+        TestObject obj;
+        obj.Init(i);
+        myObjectList.Add(obj);
+        // Add pointers to the object above AND create new objects.
+        myObjectPointerList.Add(&myObjectList[i]);
+      }
+      for (int i = 0; i < 5; i++) {
+        myObjectPointerList.Add(new TestObject(i + 5));
+      }
+      // Test sizes.
+      Assert::AreEqual(myIntList.Count(), (uint)5, L"IntList did not contain 5 objects.");
+      Assert::AreEqual(myStringList.Count(), (uint)5, L"StringList did not contain 5 objects.");
+      Assert::AreEqual(myObjectList.Count(), (uint)5, L"ObjectList did not contain 5 objects.");
+      Assert::AreEqual(myObjectPointerList.Count(), (uint)10, L"PointerList did not contain 10 objects");
+      for (unsigned short i = 0; i < 5; i++) {
+        Assert::AreEqual(myIntList[i], (int)i, L"A index in the IntList was not correct.");
+        Assert::AreEqual(myObjectList[i].myInt, myObjectPointerList[i]->myInt, L"A index in the Object or Pointer list was not correct.");
       }
     }
 
-    TEST_METHOD(RemoveAndDelete)
-    {
-      for (short i = 0; i < 5; i++) {
-        myIntList.Add(i);
-        TestObject t;
-        t.Init(i);
-        myObjectList.Add(t);
-        myObjectPointerList.Add(&t);
-      }
-      myIntList.Remove(3);
-      Assert::IsFalse(myIntList.Contains(3), L"Removed index was still in list.");
-      myObjectPointerList.DeleteCyclicAtIndex(3);
-      Assert::IsFalse(myObjectPointerList.Contains(&myObjectList[3]), L"Deleted object was still in list.");
-      Assert::AreNotEqual(myObjectPointerList[3]->myInt, myObjectList[3].myInt, L"Objects on index 3 are equal.");
-      Assert::AreEqual(myObjectPointerList.Count(), static_cast<uint>(4), L"Pointer list size was not changed, even if an object was deleted.");
 
-      myObjectPointerList.DeleteAll();
-      
 
-    }
-  
+
 
 
   private:
