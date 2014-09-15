@@ -208,7 +208,7 @@ namespace Datastructures
   */
   void List<Type, CountType>::DeleteAtIndex(const CountType& index, const bool& keepOrder)
   {
-    assert((index >= 0) && (index < myCurrentNumberOfItems) && "Array out of bounds.");
+    assert((index >= 0) && (index < myCurrentNumberOfItems) && "Index out of bounds.");
     myCurrentNumberOfItems--;
     delete_s(myItems[index]);
     if (!keepOrder) {
@@ -243,7 +243,7 @@ namespace Datastructures
   */
   void List<Type, CountType>::RemoveAtIndex(const CountType &index, const bool& keepOrder)
   {
-    assert((index >= 0) && (index < myCurrentNumberOfItems) && "Array out of bounds.");
+    assert((index >= 0) && (index < myCurrentNumberOfItems) && "Index out of bounds.");
     myCurrentNumberOfItems--;
     if (!keepOrder) {
       myItems[index] = myItems[myCurrentNumberOfItems];
@@ -349,14 +349,14 @@ namespace Datastructures
   template<class Type, class CountType>
   Type& List<Type, CountType>::operator [](const CountType& index) const
   {
-    assert((index >= 0) && (index < myCurrentNumberOfItems) && "Array out of bounds.");
+    assert((index >= 0) && (index < myCurrentNumberOfItems) && "Index out of bounds.");
     return myItems[index];
   }
 
   template<class Type, class CountType>
   Type& List<Type, CountType>::operator [](const CountType& index)
   {
-    assert((index >= 0) && (index < myCurrentNumberOfItems) && "Array out of bounds.");
+    assert((index >= 0) && (index < myCurrentNumberOfItems) && "Index out of bounds.");
     return myItems[index];
   }
 
