@@ -80,13 +80,16 @@ namespace Datastructures
     inline Type& operator[](const CountType& index);
     void Optimize();
 
+    static List<Type, CountType> Concat(List<Type, CountType> aList1, List<Type, CountType> aList2);
+
+
   private:
     inline void Resize(const CountType& newSize);
 
-    Type* myItems;
-    CountType myCurrentNumberOfItems;
-    CountType myMaxNumberOfItems;
-    CountType myIncreaseSize;
+    Type* myItems = NULL;
+    CountType myCurrentNumberOfItems = 0;
+    CountType myMaxNumberOfItems = 0;
+    CountType myIncreaseSize = 0;
   };
 
   template<class Type, class CountType>
@@ -109,8 +112,7 @@ namespace Datastructures
   template<class Type, class CountType>
   List<Type, CountType>::List(const List &copy)
   {
-    delete[] myItems;
-    ReInit(copy.myMaxNumberOfItems, copy.myIncreaseSize);
+    Init(copy.myMaxNumberOfItems, copy.myIncreaseSize);
     myCurrentNumberOfItems = copy.myCurrentNumberOfItems;
     for (CountType i = 0; i<myCurrentNumberOfItems; i++){
       myItems[i] = copy.myItems[i];
@@ -337,16 +339,15 @@ namespace Datastructures
   }
 
   template<class Type, class CountType>
-  List<Type, CountType>& List<Type, CountType>::operator +=(const List<Type, CountType>& array)
+  List<Type, CountType>& List<Type, CountType>::operator +=(const List<Type, CountType>& aArray)
   {
-    if (myMaxNumberOfItems < myCurrentNumberOfItems + array.myCurrentNumberOfItems) {
-      Resize(myCurrentNumberOfItems + array.myCurrentNumberOfItems + myIncreaseSize);
+    if (myMaxNumberOfItems < myCurrentNumberOfItems + aArray.myCurrentNumberOfItems) {
+      Resize(myCurrentNumberOfItems + aArray.myCurrentNumberOfItems + GrowRate());
     }
-    CountType j = 0;
-    for (CountType i = myCurrentNumberOfItems; j < array.myCurrentNumberOfItems; j++, i++) {
-      myItems[i] = array.myItems[j];
+    for (CountType i = 0; i < aArray.myCurrentNumberOfItems; i++){
+      myItems[myCurrentNumberOfItems + i] = aArray[i];
     }
-    myCurrentNumberOfItems += array.myCurrentNumberOfItems;
+    myCurrentNumberOfItems += aArray.myCurrentNumberOfItems;
     return *this;
   }
 
@@ -380,6 +381,14 @@ namespace Datastructures
     delete_array_s(myItems);
     myMaxNumberOfItems = newSize;
     myItems = tempList;
+  }
+
+  template<class Type, class CountType>
+  List<Type, CountType> List<Type, CountType>::Concat(List<Type, CountType> aList1, List<Type, CountType> aList2)
+  {
+    List<Type, CountType> t(aList1);
+    t += aList2;
+    return t;
   }
 }
 #endif // GENERIC_LIST_H
