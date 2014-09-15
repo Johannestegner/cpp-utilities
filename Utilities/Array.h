@@ -1,5 +1,13 @@
+/**
+* Author: Johannes Tegnér
+* https://github.com/Johannestegner
+* jo.tegner@gmail.com
+*/
 #ifndef BOUNDSCHECK_ARRAY_H
 #define BOUNDSCHECK_ARRAY_H
+#ifndef NULL
+#define NULL 0
+#endif
 
 namespace Datastructures
 {

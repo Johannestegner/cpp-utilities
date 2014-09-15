@@ -7,6 +7,9 @@
 #define LIST_H
 #include "Macros.h"
 #include <assert.h>
+#ifndef NULL
+#define NULL 0
+#endif
 
 namespace Datastructures
 {
@@ -130,7 +133,8 @@ namespace Datastructures
   template<class Type, class CountType>
   List<Type, CountType>::~List()
   {
-    delete_array_s(myItems);
+    delete[] myItems;
+    myItems = NULL;
   }
  
   template<class Type, class CountType>
@@ -160,7 +164,8 @@ namespace Datastructures
     if (myItems == NULL) {
       return Init(start, growth);
     }
-    delete_array_s(myItems);
+    delete[] myItems;
+    myItems = NULL;
     myMaxNumberOfItems = start;
     myIncreaseSize = growth;
     myCurrentNumberOfItems = 0;
@@ -210,7 +215,8 @@ namespace Datastructures
   {
     assert((index >= 0) && (index < myCurrentNumberOfItems) && "Index out of bounds.");
     myCurrentNumberOfItems--;
-    delete_s(myItems[index]);
+    delete myItems[index];
+    myItems[index] = NULL;
     if (!keepOrder) {
       myItems[index] = myItems[myCurrentNumberOfItems];
     } else {
@@ -315,8 +321,6 @@ namespace Datastructures
     for (CountType i = myCurrentNumberOfItems; i-- > 0;) {
       delete myItems[i];
       myItems[i] = NULL;
-      
-      //  delete_s(myItems[i]);
     }
     myCurrentNumberOfItems = 0;
   }
@@ -324,7 +328,8 @@ namespace Datastructures
   template<class Type, class CountType>
   List<Type, CountType>& List<Type, CountType>::operator =(const List<Type, CountType>& copy)
   {
-    delete_array_s(myItems);
+    delete[] myItems;
+    myItems = NULL;
     ReInit(copy.myMaxNumberOfItems, copy.myIncreaseSize);
     myCurrentNumberOfItems = copy.myCurrentNumberOfItems;
     for (CountType i = 0; i<myCurrentNumberOfItems; i++){
@@ -367,7 +372,8 @@ namespace Datastructures
     for (CountType i = 0; i<myCurrentNumberOfItems; i++){
       tempList[i] = myItems[i];
     }
-    delete_array_s(myItems);
+    delete[] myItems;
+    myItems = NULL;
     myMaxNumberOfItems = newSize;
     myItems = tempList;
   }
