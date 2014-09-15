@@ -20,21 +20,30 @@ namespace Datastructures
     List(const CountType& start, const CountType& growth);
     List(const List& copy);
     ~List();
-
-
+    
     void Init(const CountType& start, const CountType& growth);
     void ReInit(const CountType& start, const CountType& growth);
     inline CountType Add(const Type& object);
-    inline void Insert(CountType& index, Type& object);
-    inline void DeleteCyclic(const Type& object);
-    inline void DeleteCyclicAtIndex(const CountType& index);
-    inline void RemoveCyclic(const Type& object);
-    inline void RemoveCyclicAtIndex(const CountType& index);
-    inline void Remove(const Type& object);
-    inline void RemoveAtIndex(const CountType& index);
+    inline void Insert(const CountType& index, const Type& object);
+
+    inline void Remove(const Type& object, const bool& keepOrder = true);
+    inline void RemoveAtIndex(const CountType& index, const bool& keepOrder = true);
+    inline void Delete(const Type& object, const bool& keepOrder = true);
+    inline void DeleteAtIndex(const CountType& index, const bool& keepOrder = true);
+
     inline bool Contains(const Type& object);
     inline void Clear();
+    inline void RemoveAll();
     inline void DeleteAll();
+
+    /**
+    * Check if the list is empty or not.
+    * @returns bool True if empty else false.
+    */
+    __inline const bool IsEmpty() const 
+    {
+      return myCurrentNumberOfItems == 0;
+    }
 
     /**
     * Fetches the size of the List.
@@ -78,7 +87,6 @@ namespace Datastructures
     List<Type, CountType>& operator +=(const List<Type, CountType>& array);
     inline Type& operator[](const CountType& index) const;
     inline Type& operator[](const CountType& index);
-    void Optimize();
 
     static List<Type, CountType> Concat(List<Type, CountType> aList1, List<Type, CountType> aList2);
 
@@ -194,106 +202,81 @@ namespace Datastructures
 
   template<class Type, class CountType>
   /**
-  * Delete an object and move the last object in the list to the index of the deleted object.
-  * This function is a lot quicker than the ordinary delete function, but is not suitable for a list that
-  * need to be in a specific order.
-  * @param object Object to delete.
-  */
-  void List<Type, CountType>::DeleteCyclic(const Type &object)
-  {
-    CountType index = IndexOf(object);
-    if (index == static_cast<CountType>(-1)){
-      return;
-    }
-    DeleteCyclicAtIndex(index);
-  }
-
-  template<class Type, class CountType>
-  /**
-  * Delete an object and move the last object in the list to the index of the deleted object.
-  * This function is a lot quicker than the ordinary delete function, but is not suitable for a list that
-  * need to be in a specific order.
+  * Delete an object from the list by index.
   * @param index Index of the object to delete.
+  * @param keepOrder If set to false, it will move the item at last index to the index of the deleted item (faster, but will not maintain any order).
   */
-  void List<Type, CountType>::DeleteCyclicAtIndex(const CountType &index)
+  void List<Type, CountType>::DeleteAtIndex(const CountType& index, const bool& keepOrder)
   {
     assert((index >= 0) && (index < myCurrentNumberOfItems) && "Array out of bounds.");
+    myCurrentNumberOfItems--;
     delete_s(myItems[index]);
-    myItems[index] = myItems[myCurrentNumberOfItems - 1];
-    myCurrentNumberOfItems--;
-  }
-
-  template<class Type, class CountType>
-  /**
-  * Remove an object from the list and move the last object in the list to the index of the removed object.
-  * This function is a lot quicker than the ordinary Remove function, but it is not suitable for a list that need
-  * to be in a specific order.
-  * @param object Object to remove.
-  */
-  void List<Type, CountType>::RemoveCyclic(const Type &object)
-  {
-    CountType index = IndexOf(object);
-    if (index == static_cast<CountType>(-1)){
-      return;
+    if (!keepOrder) {
+      myItems[index] = myItems[myCurrentNumberOfItems];
+    } else {
+      for (CountType i = index; i<myCurrentNumberOfItems; i++) {
+        myItems[i] = myItems[i + 1];
+      }
     }
-    RemoveCyclicAtIndex(index);
   }
 
   template<class Type, class CountType>
   /**
-  * Remove an object from the list and move the last object in the list to the index of the removed object.
-  * This function is a lot quicker than the ordinary Remove function, but it is not suitable for a list that need
-  * to be in a specific order.
-  * @param index Index of the object to remove..
+  * Delete an object from the list.
+  * @param object Object to delete.
+  * @param keepOrder If set to false, it will move the item at last index to the index of the deleted item (faster, but will not maintain any order).
   */
-  void List<Type, CountType>::RemoveCyclicAtIndex(const CountType &index)
+  void List<Type, CountType>::Delete(const Type& object, const bool& keepOrder) 
   {
-    assert((index >= 0) && (index < myCurrentNumberOfItems) && "Array out of bounds.");
-    myItems[index] = myItems[myCurrentNumberOfItems - 1];
-    myCurrentNumberOfItems--;
+    for (CountType i = myCurrentNumberOfItems; i-->0;) {
+      if (myItems[i] == object) {
+        return DeleteAtIndex(i, keepOrder);
+      }
+    }
   }
 
   template<class Type, class CountType>
   /**
   * Remove an object from the list by index.
   * @param index Index of the object to remove.
+  * @param keepOrder If set to false, it will move the item at last index to the index of the removed item (faster, but will not maintain any order).
   */
-  void List<Type, CountType>::RemoveAtIndex(const CountType &index)
+  void List<Type, CountType>::RemoveAtIndex(const CountType &index, const bool& keepOrder)
   {
-    for (CountType i = index; i<myCurrentNumberOfItems - 1; i++){
-      myItems[i] = myItems[i + 1];
-    }
+    assert((index >= 0) && (index < myCurrentNumberOfItems) && "Array out of bounds.");
     myCurrentNumberOfItems--;
+    if (!keepOrder) {
+      myItems[index] = myItems[myCurrentNumberOfItems];
+    } else {
+      for (CountType i = index; i<myCurrentNumberOfItems; i++){
+        myItems[i] = myItems[i + 1];
+      }
+    }
   }
 
   template<class Type, class CountType>
   /**
   * Remove an object from the list.
   * @param object Object to remove.
+  * @param keepOrder If set to false, it will move the item at last index to the index of the removed item (faster, but will not maintain any order).
   */
-  void List<Type, CountType>::Remove(const Type &object)
+  void List<Type, CountType>::Remove(const Type &object, const bool& keepOrder)
   {
-    CountType index = 0;
-    bool found = false;
-    for (CountType i = 0; i < myCurrentNumberOfItems; i++){
+    for (CountType i = myCurrentNumberOfItems; i-- > 0;) {
       if (myItems[i] == object) {
-        index = i;
-        found = true;
+        return RemoveAtIndex(i, keepOrder);
       }
     }
-    if (!found) {
-      return;
-    }
-    RemoveAtIndex(index);
   }
 
   template<class Type, class CountType>
   /**
   * Insert object at specific index.
+  * All objects above in the list will be pushed up one index.
   * @param index Index to place object at.
   * @param object Object to insert.
   */
-  void List<Type, CountType>::Insert(CountType &index, Type &object)
+  void List<Type, CountType>::Insert(const CountType &index, const Type &object)
   {
     if (myCurrentNumberOfItems == myMaxNumberOfItems){
       Resize(myMaxNumberOfItems + myIncreaseSize);
@@ -316,12 +299,24 @@ namespace Datastructures
 
   template<class Type, class CountType>
   /**
+  * Clear the list.
+  */
+  void List<Type, CountType>::RemoveAll()
+  {
+    myCurrentNumberOfItems = 0;
+  }
+
+  template<class Type, class CountType>
+  /**
   * Delete all objects in the list.
   */
   void List<Type, CountType>::DeleteAll()
   {
-    for (CountType i = 0; i<myCurrentNumberOfItems; i++) {
-      delete_s(myItems[i]);
+    for (CountType i = myCurrentNumberOfItems; i-- > 0;) {
+      delete myItems[i];
+      myItems[i] = NULL;
+      
+      //  delete_s(myItems[i]);
     }
     myCurrentNumberOfItems = 0;
   }
@@ -349,12 +344,6 @@ namespace Datastructures
     }
     myCurrentNumberOfItems += aArray.myCurrentNumberOfItems;
     return *this;
-  }
-
-  template<class Type, class CountType>
-  void List<Type, CountType>::Optimize()
-  {
-    Resize(myCurrentNumberOfItems);
   }
 
   template<class Type, class CountType>

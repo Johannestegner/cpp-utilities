@@ -32,26 +32,6 @@ namespace TestUtilities
       Logger::WriteMessage("Destroy.");
     }
 
-    /*Functions to test:
-
-    void Insert(CountType& index, Type& object);
-    void DeleteCyclic(const Type& object);
-    void DeleteCyclicAtIndex(const CountType& index);
-    void RemoveCyclic(const Type& object);
-    void RemoveCyclicAtIndex(const CountType& index);
-    void Remove(const Type& object);
-    void RemoveAtIndex(const CountType& index);
-    CountType IndexOf(const Type& object);
-    bool Contains(const Type& object);
-    void Clear();
-    void DeleteAll();
-    void Optimize();
-    const CountType& Count() const;
-    const CountType& Size() const;
-    const CountType& Capacity() const;
-    const CountType& GrowSize() const;
-    */
-    
     TEST_METHOD(ConstructDestruct)
     {
       List<int, uint>* pTest = new List<int, uint>(5, 5);
@@ -169,8 +149,69 @@ namespace TestUtilities
       }
     }
 
+    TEST_METHOD(Insert)
+    {
+      myIntList.Add(1);
+      myIntList.Add(3);
+      myIntList.Add(4);
+      myIntList.Insert(1, 2);
+      Assert::AreEqual((uint)4, myIntList.Count());
+      Assert::AreEqual(2, myIntList[1], L"Index 1 was not 2.");
+      Assert::AreEqual(3, myIntList[2], L"Index 2 was not 3.");
+    }
 
+    TEST_METHOD(DeleteAndRemove)
+    {
+      for (int i = 0; i < 5; i++) {
+        myObjectPointerList.Add(new TestObject(i));
+      }
+      TestObject* temp = myObjectPointerList[2];
+      // Delete one by ref.
+      myObjectPointerList.Delete(temp, false);
+      Assert::AreEqual((uint)4, myObjectPointerList.Count(), L"Count was not changed.");
+      Assert::AreEqual(4, myObjectPointerList[2]->myInt, L"The object on index 2 was not the one previously at index 4");
+      int shouldBe = myObjectPointerList[myObjectPointerList.Count() - 1]->myInt;
+      // Delete one by index.
+      myObjectPointerList.DeleteAtIndex(0, false);
+      Assert::AreEqual((uint)3, myObjectPointerList.Count(), L"Count was not changed.");
+      Assert::AreEqual(shouldBe, myObjectPointerList[0]->myInt);
+      // Delete all.
+      myObjectPointerList.DeleteAll();
+      Assert::IsTrue(myObjectPointerList.IsEmpty(), L"List was not empty.");
+      // Refill.
+      for (int i = 0; i < 5; i++) {
+        myObjectPointerList.Add(new TestObject(i));
+        myIntList.Add(i);
+      }
+      // Delete one while maintaining order.
+      myObjectPointerList.DeleteAtIndex(0);
+      Assert::AreEqual(1, myObjectPointerList[0]->myInt, L"Delete at index did not maintain order.");
+      temp = myObjectPointerList[0];      
+      myObjectPointerList.Delete(temp);
+      Assert::AreEqual(2, myObjectPointerList[0]->myInt, L"Delete by object did not maintain order.");
+      myObjectPointerList.DeleteAll(); // Free up memory.
 
+      // Test remove one by ref.
+      myIntList.Remove(0, false);
+      Assert::AreEqual(4, myIntList[0], L"None maintaining Remove did not move last index to index 0.");
+      Assert::AreEqual((uint)4, myIntList.Count(), L"Count was not changed.");
+      myIntList.RemoveAtIndex(0, false);
+      Assert::AreEqual(3, myIntList[0], L"None maintaining RemoveAtIndex did not move last index to index 0.");
+      Assert::AreEqual((uint)3, myIntList.Count(), L"Count was not changed.");
+      //Remove all.
+      myIntList.RemoveAll();
+      Assert::AreEqual((uint)0, myIntList.Count(), L"Count was not changed.");
+      // Refill.
+      for (int i = 0; i < 5; i++) {
+        myIntList.Add(i);
+      }
+      myIntList.Remove(0);
+      Assert::AreEqual(1, myIntList[0], L"Remove by object did not maintain order.");
+      Assert::AreEqual((uint)4, myIntList.Count(), L"Count was not changed.");
+      myIntList.RemoveAtIndex(0);
+      Assert::AreEqual(2, myIntList[0], L"Remove at index did not maintain order.");
+      Assert::AreEqual((uint)3, myIntList.Count(), L"Count was not changed.");
+    }
 
   private:
     class TestObject
@@ -196,6 +237,10 @@ namespace TestUtilities
       {
       }
 
+      ~TestObject()
+      {
+        
+      }
 
 
       bool TestObject::operator==(const TestObject &other) const 
