@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include "List.h"
+#include "TestObject.h"
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace Datastructures;
 
@@ -12,27 +13,16 @@ namespace TestUtilities
 	TEST_CLASS(Test_List)
 	{
 	public:
-    Test_List() 
-    {
-      Logger::WriteMessage("Starting...");
-    }
-    
     
     TEST_METHOD_INITIALIZE(SetUp)
     {
-      Logger::WriteMessage("Setup.");
       myIntList.Init(5, 5);
       myObjectList.Init(5, 5);
       myObjectPointerList.Init(5, 5);
       myStringList.Init(5, 5);
     }
 
-    TEST_METHOD_CLEANUP(Destroy)
-    {
-      Logger::WriteMessage("Destroy.");
-    }
-
-    TEST_METHOD(ConstructDestruct)
+    TEST_METHOD(List_ConstructDestruct)
     {
       List<int, uint>* pTest = new List<int, uint>(5, 5);
       Assert::AreEqual(pTest->Capacity(), (uint)5, L"Capacity was not 5.");
@@ -42,9 +32,8 @@ namespace TestUtilities
       pTest = NULL;
     }
 
-    TEST_METHOD(Copy)
+    TEST_METHOD(List_Copy)
     {
-      Logger::WriteMessage("Copy test.");
       List<int, unsigned int> copy1 = myIntList;
       List<int, unsigned int> copy2(myIntList);
       for (unsigned short i = 0; i < myIntList.Count(); i++) {
@@ -54,18 +43,16 @@ namespace TestUtilities
     }
 
 
-    TEST_METHOD(Initialization)
+    TEST_METHOD(List_Initialization)
     {
-      Logger::WriteMessage("Initialization test.");
       // Test Size, Capacity, GrowRate.
       Assert::AreEqual(myIntList.Count(), (uint)0, L"Size was larger than 0.");
       Assert::AreEqual(myIntList.Capacity(), (uint)5, L"Capacity was not 5.");
       Assert::AreEqual(myIntList.GrowRate(), (uint)5, L"GrowRate was not 5.");
     }
 
-    TEST_METHOD(ReInitialization)
+    TEST_METHOD(List_ReInitialization)
     {
-      Logger::WriteMessage("Reinitialization test.");
       myIntList.ReInit(5, 5);
       // Test Size, Capacity, GrowRate.
       Assert::AreEqual(myIntList.Count(), (uint)0, L"Size was larger than 0.");
@@ -73,9 +60,8 @@ namespace TestUtilities
       Assert::AreEqual(myIntList.GrowRate(), (uint)5, L"GrowRate was not 5.");
     }
 
-    TEST_METHOD(Add)
+    TEST_METHOD(List_Add)
     {
-      Logger::WriteMessage("Add test.");
       // Test adding primitives, objects and pointers to the lists.
       for (unsigned short i = 0; i < 5; i++) {
         myIntList.Add(i);
@@ -100,7 +86,7 @@ namespace TestUtilities
       }
     }
 
-    TEST_METHOD(Merge)
+    TEST_METHOD(List_Merge)
     {
       List<int, uint> test;
       test.Init(5, 5);
@@ -124,7 +110,7 @@ namespace TestUtilities
       }
     }
 
-    TEST_METHOD(GetAndSet)
+    TEST_METHOD(List_GetAndSet)
     {
       // Get.
       myIntList.Add(0);
@@ -149,7 +135,7 @@ namespace TestUtilities
       }
     }
 
-    TEST_METHOD(Insert)
+    TEST_METHOD(List_Insert)
     {
       myIntList.Add(1);
       myIntList.Add(3);
@@ -160,7 +146,7 @@ namespace TestUtilities
       Assert::AreEqual(3, myIntList[2], L"Index 2 was not 3.");
     }
 
-    TEST_METHOD(DeleteAndRemove)
+    TEST_METHOD(List_DeleteAndRemove)
     {
       for (int i = 0; i < 5; i++) {
         myObjectPointerList.Add(new TestObject(i));
@@ -214,61 +200,9 @@ namespace TestUtilities
     }
 
   private:
-    class TestObject
-    {
-    public:
-      void Init(int val)
-      {
-        myInt = val;
-        myDouble = static_cast<double>(val);
-        myString = std::to_string(val);
-        myList.Init(val, val);
-        std::string t = "List";
-        t.append(std::to_string(val));
-        myList.Add(t);
-      }
-
-      TestObject(int i)
-      {
-        Init(i);
-      }
-
-      TestObject()
-      {
-      }
-
-      ~TestObject()
-      {
-        
-      }
-
-
-      bool TestObject::operator==(const TestObject &other) const 
-      {
-        if (myInt != other.myInt) return false;
-        if (myDouble != other.myDouble) return false;
-        if (myString != other.myString) return false;
-        if (myList.Count() != other.myList.Count()) return false;
-        for (uint i = 0; i < myList.Count(); i++) {
-          if (myList[i] != other.myList[i]) return false;
-        }
-        return true;
-      }
-
-      int myInt;
-      std::string myString;
-      double myDouble;
-      List<std::string, uint> myList;
-    };
-
     List<int, uint> myIntList;
     List<TestObject, uint> myObjectList;
     List<TestObject*, uint> myObjectPointerList;
     List<std::string, uint> myStringList;
-    
-
-
-
-
-	};
+  };
 }

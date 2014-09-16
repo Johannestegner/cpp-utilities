@@ -5,6 +5,7 @@
 */
 #ifndef BOUNDSCHECK_ARRAY_H
 #define BOUNDSCHECK_ARRAY_H
+#include <assert.h>
 #ifndef NULL
 #define NULL 0
 #endif
