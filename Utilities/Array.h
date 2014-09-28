@@ -13,6 +13,7 @@
 namespace Datastructures
 {
   template<typename Type, unsigned int StaticSize>
+  // Array wrapped within a bounds-checking structure.
   class Array
   {
   public:
@@ -23,24 +24,6 @@ namespace Datastructures
     inline const Array& operator=(const Array& aArray);
     inline Type& operator[](const unsigned int& aIndex);
     inline const Type& operator[](const unsigned int& aIndex) const;
-
-    /**
-    * Get the size of the array.
-    * @returns Array size.
-    */
-    __inline unsigned int Size()
-    {
-      return StaticSize;
-    }
-
-    /**
-    * Get the size of the array.
-    * @returns Array size.
-    */
-    __inline unsigned int Count()
-    {
-      return StaticSize;
-    }
 
   private:
     Type myItems[StaticSize];

@@ -36,5 +36,8 @@
     <ClInclude Include="Stack.h">
       <Filter>Datastructures</Filter>
     </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Datastructures</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

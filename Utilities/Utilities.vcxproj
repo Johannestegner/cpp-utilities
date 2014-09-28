@@ -66,6 +66,7 @@
   <ItemGroup>
     <ClInclude Include="Array.h" />
     <ClInclude Include="FileReader.h" />
+    <ClInclude Include="Grid.h" />
     <ClInclude Include="LinkedList.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="Queue.h" />

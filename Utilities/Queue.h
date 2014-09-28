@@ -1,3 +1,8 @@
+/**
+* Author: Johannes Tegnér
+* https://github.com/Johannestegner
+* jo.tegner@gmail.com
+*/
 #ifndef QUEUE_H
 #define QUEUE_H
 #ifndef NULL
@@ -9,8 +14,7 @@
 namespace Datastructures
 {
   template<class Type>
-  // Queue class.
-  // The queue is bascially a single-linked list.
+  // First in - last out queue.
   class Queue {
   public:
     Queue();
@@ -29,20 +33,18 @@ namespace Datastructures
       return myCount != 0;
     }
 
-    // If the queue is empty or not.
+    // True if the queue has no more items, else false.
     __inline const bool IsEmpty() const 
     {
       return myCount == 0;
     }
 
-    // Get the current size of the queue.
-    // @alias Count
+    // Size of the queue.
     _inline const unsigned int& Size() {
       return myCount;
     }
 
-    // Get the current count of the queue.
-    // @alias Size
+    // Size of the queue.
     _inline const unsigned int& Count() {
       return myCount;
     }

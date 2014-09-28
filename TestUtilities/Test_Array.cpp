@@ -32,8 +32,6 @@ namespace TestUtilities
       myObjectPointerArray[1] = t;
       Assert::AreEqual(0, myObjectPointerArray[1]->myInt, L"Index 1 was not 0.");
       Assert::AreEqual(1, myObjectPointerArray[0]->myInt, L"Index 0 was not 1.");
-      Assert::AreEqual((unsigned int)2, myObjectPointerArray.Count(), L"Size was not correct.");
-      Assert::AreEqual((unsigned int)2, myObjectPointerArray.Size(), L"Size was not correct.");
     }
 
     TEST_METHOD_CLEANUP(Cleanup)

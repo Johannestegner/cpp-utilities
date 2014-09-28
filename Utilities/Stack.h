@@ -1,3 +1,8 @@
+/**
+* Author: Johannes Tegnér
+* https://github.com/Johannestegner
+* jo.tegner@gmail.com
+*/
 #ifndef STACK_H
 #define STACK_H
 #ifndef NULL
@@ -9,6 +14,7 @@
 namespace Datastructures
 {
   template <class Type>
+  // Last in - first out queue.
   class Stack
   {
   public:
@@ -36,14 +42,12 @@ namespace Datastructures
     }
     
     // Size of the stack.
-    // @alias Count
     __inline const unsigned int& Size() const
     {
       return myCount;
     }
 
     // Size of the stack.
-    // @alias Size
     __inline const unsigned int& Count() const 
     {
       return myCount;
@@ -163,11 +167,5 @@ namespace Datastructures
     }
     myCount++;
   }
-
-
-
-
-
-
 }
 #endif
