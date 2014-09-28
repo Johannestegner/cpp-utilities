@@ -80,7 +80,7 @@ namespace TestUtilities
       myIntQueue.Clear();
       myObjectPointerQueue.Clear();
 
-      Assert::IsTrue(myIntQueue.Empty(), L"Was not empty.");
+      Assert::IsTrue(myIntQueue.IsEmpty(), L"Was not empty.");
       Assert::AreEqual(myIntQueue.Size() & myIntQueue.Count(), (unsigned int)0, L"Size was not 0.");
     }
 

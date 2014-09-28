@@ -30,7 +30,7 @@ namespace Datastructures
     }
 
     // If the queue is empty or not.
-    __inline const bool Empty() const 
+    __inline const bool IsEmpty() const 
     {
       return myCount == 0;
     }
@@ -55,7 +55,7 @@ namespace Datastructures
     {
     public:
 
-      Node(Type aObject)
+      Node(const Type& aObject)
       {
         myItem = aObject;
       }
@@ -64,11 +64,6 @@ namespace Datastructures
       {
       }
 
-      // Check if the node have a child.
-      bool HasChild() 
-      {
-        return myChild != NULL;
-      }
     private:
       Type myItem;
       Node *myChild = NULL;
@@ -91,7 +86,9 @@ namespace Datastructures
   template<class Type>
   Queue<Type>::Queue(const Queue& aQueue)
   {
-
+    myCount = aQueue.Count;
+    myFirst = aQueue.myFirst;
+    myLast = aQueue.myLast;
   }
 
   template<class Type>
@@ -163,11 +160,11 @@ namespace Datastructures
     if (myCount == 0) {
       return;
     }
-    while (myFirst->HasChild()) {
+    do {
       Node<Type>* child = myFirst->myChild;
       delete myFirst;
       myFirst = child;
-    }
+    } while (myFirst != NULL);
     myCount = 0;
   }
 };
