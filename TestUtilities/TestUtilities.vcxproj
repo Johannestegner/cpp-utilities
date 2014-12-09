@@ -92,6 +92,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Test_Array.cpp" />
+    <ClCompile Include="Test_LinkedList.cpp" />
     <ClCompile Include="Test_List.cpp" />
     <ClCompile Include="Test_Queue.cpp" />
     <ClCompile Include="Test_Stack.cpp" />

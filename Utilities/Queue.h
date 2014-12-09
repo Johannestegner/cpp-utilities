@@ -3,8 +3,8 @@
 * https://github.com/Johannestegner
 * jo.tegner@gmail.com
 */
-#ifndef QUEUE_H
-#define QUEUE_H
+#ifndef UTIL_QUEUE_H
+#define UTIL_QUEUE_H
 #ifndef NULL
 #define NULL 0
 #endif

@@ -3,8 +3,8 @@
 * https://github.com/Johannestegner
 * jo.tegner@gmail.com
 */
-#ifndef LIST_H
-#define LIST_H
+#ifndef UTIL_LIST_H
+#define UTIL_LIST_H
 #include <assert.h>
 #ifndef NULL
 #define NULL 0

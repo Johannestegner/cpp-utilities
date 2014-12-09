@@ -24,9 +24,6 @@
     <ClInclude Include="List.h">
       <Filter>Datastructures</Filter>
     </ClInclude>
-    <ClInclude Include="LinkedList.h">
-      <Filter>Datastructures</Filter>
-    </ClInclude>
     <ClInclude Include="Array.h">
       <Filter>Datastructures</Filter>
     </ClInclude>
@@ -36,7 +33,13 @@
     <ClInclude Include="Stack.h">
       <Filter>Datastructures</Filter>
     </ClInclude>
-    <ClInclude Include="Grid.h">
+    <ClInclude Include="Iterator.h">
+      <Filter>Datastructures</Filter>
+    </ClInclude>
+    <ClInclude Include="LinkedList.h">
+      <Filter>Datastructures</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
       <Filter>Datastructures</Filter>
     </ClInclude>
   </ItemGroup>

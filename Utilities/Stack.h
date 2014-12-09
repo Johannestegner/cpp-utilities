@@ -3,8 +3,8 @@
 * https://github.com/Johannestegner
 * jo.tegner@gmail.com
 */
-#ifndef STACK_H
-#define STACK_H
+#ifndef UTIL_STACK_H
+#define UTIL_STACK_H
 #ifndef NULL
 #define NULL 0
 #endif

@@ -3,8 +3,8 @@
 * https://github.com/Johannestegner
 * jo.tegner@gmail.com
 */
-#ifndef BOUNDSCHECK_ARRAY_H
-#define BOUNDSCHECK_ARRAY_H
+#ifndef UTIL_BOUNDSCHECK_ARRAY_H
+#define UTIL_BOUNDSCHECK_ARRAY_H
 #include <assert.h>
 #ifndef NULL
 #define NULL 0
