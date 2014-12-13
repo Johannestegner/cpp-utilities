@@ -36,10 +36,10 @@
     <ClInclude Include="Iterator.h">
       <Filter>Datastructures</Filter>
     </ClInclude>
-    <ClInclude Include="LinkedList.h">
+    <ClInclude Include="Node.h">
       <Filter>Datastructures</Filter>
     </ClInclude>
-    <ClInclude Include="Node.h">
+    <ClInclude Include="DoublyLinkedList.h">
       <Filter>Datastructures</Filter>
     </ClInclude>
   </ItemGroup>

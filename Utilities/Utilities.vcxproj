@@ -67,7 +67,7 @@
     <ClInclude Include="Array.h" />
     <ClInclude Include="FileReader.h" />
     <ClInclude Include="Iterator.h" />
-    <ClInclude Include="LinkedList.h" />
+    <ClInclude Include="DoublyLinkedList.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Queue.h" />

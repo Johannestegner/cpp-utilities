@@ -10,7 +10,7 @@
 #define NULL 0
 #endif
 
-namespace Datastructures
+namespace DataStructures
 {
   template<typename Type, unsigned int StaticSize>
   // Array wrapped within a bounds-checking structure.
@@ -60,6 +60,7 @@ namespace Datastructures
   }
 
   template <typename Type, unsigned int StaticSize>
+  // Assign
   Type& Array<Type, StaticSize>::operator[](const unsigned int& aIndex)
   {
     assert((aIndex >= 0) && (aIndex < StaticSize) && "Index out of bounds.");
@@ -67,6 +68,7 @@ namespace Datastructures
   }
 
   template <typename Type, unsigned int StaticSize>
+  // Access
   const Type& Array<Type, StaticSize>::operator[](const unsigned int& aIndex) const
   {
     assert((aIndex >= 0) && (aIndex < StaticSize) && "Index out of bounds.");

@@ -14,31 +14,31 @@
 
 namespace DataStructures
 {
-  template<typename Type>
+  template<typename Type, unsigned short Connections>
   // Iterator class.
   class Iterator
   {
-    // Constructor.
-    __inline Iterator(Node* start = NULL, l2r = true) {
-      this->reversed = !l2r;
-      this->node = start;
+  public:
+
+    __inline Iterator() {
+      this->node = NULL;
     }
 
     // Destructor.
     __inline ~Iterator() {
-      node = NULL;
+      this->node = NULL;
     }
 
     // Get value and move iterrator forward.
     __inline const Type& Next() {
       Node* temp = node;
-      node = node->GetConnection(reversed ? PARENT : CHILD);
+      node = node->GetConnection(1);
       return temp->myObject;
     }
 
     // Check if thee iterator has neext.
     __inline bool HasNext() const {
-      return node->myConnections[reversed ? PARENT : CHILD];
+      return node->myConnections[1];
     }
 
     // Get value from current.
@@ -47,19 +47,12 @@ namespace DataStructures
     }
 
     // Initialize the iterator (this can be used to re-init a iterator too).
-    __inline void Init(bool l2r, Node* first) {
-      this->reversed = !l2r;
+    __inline void Init(Node<Type, Connections>* first) {
       this->node = first;
     }
 
   private:
-    bool reversed;
-    Node* node;
-
-    enum Connections {
-      PARENT = 0,
-      CHILD = 1
-    };
+    Node<Type, Connections>* node;
   };
 }
 
