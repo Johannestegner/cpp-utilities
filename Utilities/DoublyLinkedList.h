@@ -23,21 +23,16 @@ namespace DataStructures
     DoublyLinkedList();
     DoublyLinkedList(DoublyLinkedList<Type>& copy);
     ~DoublyLinkedList();
-
     inline const DoublyLinkedList& operator=(const DoublyLinkedList& aArray);
     inline const Type& operator[](const unsigned int& aIndex) const;
-
     const Type& Get(const unsigned int& index);
     bool Add(const Type& object);
     bool Insert(const Type& object, const unsigned int& index);
     bool AddFirst(const Type& object);
     bool AddLast(const Type& object);
-
     bool Remove(const Type& object);
     bool RemoveAtIndex(const unsigned int& index);
     bool RemoveAll();
-
-
     unsigned int IndexOf(const Type& object);
 
     // Clear the list.
@@ -55,17 +50,11 @@ namespace DataStructures
       return myCount;
     }
 
-
-
   private:
+    // Fetch a node at index.
+    // This function will shorten the indexed search to half by branching and starting from 0 or from myCount, depending on shortest path.
     __inline BiDirectionalNode<Type>* GetNodeAt(const unsigned int& index) const {
       assert((index >= 0) && (index < myCount) && "Index out of bounds.");
-
-      // 1 - 0
-      // 1 / 2 = 0.5 & 0.5 is more than 0.
-      // for(i=1;i-->0;)
-      // 
-
       BiDirectionalNode<Type>* n = NULL;
       // To make the search optimal, we check if the index is more or less than half, then we decide which way we go.
       if ((myCount -1) * 0.5 > index) { // Count/2 is more than index, so we go from first and forward.
@@ -81,30 +70,11 @@ namespace DataStructures
         }
       }
       return n;
-
-      /*
-
-    if ((myCount -1) * 0.5 < index) {
-      n = myFirst;
-      for (unsigned int i = 0; i < index; i++) {
-        n = n->GetChild();
-      }
-    }
-    else {
-      n = myLast;
-      for (unsigned int i = myCount; i-- > index;) {
-        n = n->GetParent();
-      }
-    }
-    return n->GetValue();*/
-
     }
     
     BiDirectionalNode<Type>* myFirst;
     BiDirectionalNode<Type>* myLast;
     unsigned int myCount;
-
-
   };
 
   template<class Type>
