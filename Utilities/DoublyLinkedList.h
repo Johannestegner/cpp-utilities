@@ -32,9 +32,12 @@ namespace DataStructures
     bool Insert(const Type& object, const unsigned int& index);
     bool AddFirst(const Type& object);
     bool AddLast(const Type& object);
+
     bool Remove(const Type& object);
     bool RemoveAtIndex(const unsigned int& index);
     bool RemoveAll();
+
+
     unsigned int IndexOf(const Type& object);
 
     // Clear the list.
@@ -55,23 +58,46 @@ namespace DataStructures
 
 
   private:
-    __inline BiDirectionalNode<Type>* GetNodeAt(const unsigned int& index) {
+    __inline BiDirectionalNode<Type>* GetNodeAt(const unsigned int& index) const {
       assert((index >= 0) && (index < myCount) && "Index out of bounds.");
+
+      // 1 - 0
+      // 1 / 2 = 0.5 & 0.5 is more than 0.
+      // for(i=1;i-->0;)
+      // 
+
       BiDirectionalNode<Type>* n = NULL;
       // To make the search optimal, we check if the index is more or less than half, then we decide which way we go.
-      if ((myCount -1) * 0.5 < index) { // Count/2 is less than index, so we go from first and forward.
+      if ((myCount -1) * 0.5 > index) { // Count/2 is more than index, so we go from first and forward.
         n = myFirst;
         for (unsigned int i = 0; i < index; i++) {
           n = n->GetChild();
         }
       }
-      else {  // Count/2 is more than index, so we go from last and backward.
+      else {  // Count/2 is less than index, so we go from last and backward.
         n = myLast;
-        for (unsigned int i = myCount; i-- > index;) {
+        for (unsigned int i = myCount - 1; i-- > index;) {
           n = n->GetParent();
         }
       }
       return n;
+
+      /*
+
+    if ((myCount -1) * 0.5 < index) {
+      n = myFirst;
+      for (unsigned int i = 0; i < index; i++) {
+        n = n->GetChild();
+      }
+    }
+    else {
+      n = myLast;
+      for (unsigned int i = myCount; i-- > index;) {
+        n = n->GetParent();
+      }
+    }
+    return n->GetValue();*/
+
     }
     
     BiDirectionalNode<Type>* myFirst;
@@ -128,22 +154,7 @@ namespace DataStructures
   // Access
   const Type& DoublyLinkedList<Type>::operator[](const unsigned int& index) const
   {
-    assert((index >= 0) && (index < myCount) && "Index out of bounds.");
-    BiDirectionalNode<Type>* n = NULL;
-    // To make the search optimal, we check if the index is more or less than half, then we decide which way we go.
-    if (myCount * 0.5 > index) {
-      n = myFirst;
-      for (unsigned int i = 0; i < index; i++) {
-        n = n->GetChild();
-      }
-    }
-    else {
-      n = myLast;
-      for (unsigned int i = myCount; i-- > index;) {
-        n = n->GetParent();
-      }
-    }
-    return n->GetValue();
+    return GetNodeAt(index)->GetValue();
   }
   
   template<class Type>
@@ -195,6 +206,7 @@ namespace DataStructures
     }
     myFirst->SetParent(node, true);
     myFirst = node;
+    myCount++;
     return true;
   }
 
@@ -210,6 +222,7 @@ namespace DataStructures
     }
     myLast->SetChild(node, true);
     myLast = node;
+    myCount++;
     return true;
   }
 
@@ -225,10 +238,15 @@ namespace DataStructures
       }
       node = node->GetChild();
     }
-    if (node = NULL) {
-      return false;
+    if (node->GetParent() != NULL) {
+      node->GetParent()->SetChild(node->GetChild(), true);
     }
-    node->GetParent()->SetChild(node->GetChild(), true);
+    else{
+      myFirst = node->GetChild();
+      if (myFirst == NULL) {
+        myLast = NULL;
+      }
+    }
     delete node;
     myCount--;
     return true;
@@ -269,18 +287,10 @@ namespace DataStructures
       if (node->GetValue() == object) {
         return i;
       }
+      node = node->GetChild();
     }
     return myCount;
   }
-
-
-
-
-
-
 }
-
-
-
 
 #endif

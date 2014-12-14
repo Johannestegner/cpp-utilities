@@ -85,28 +85,37 @@ namespace DataStructures
 
     // Set the parent node.
     __inline void SetParent(BiDirectionalNode<Type>* node, bool fullyConnect = false) {
-      this->SetConnection(PARENT, dynamic_cast<Node<Type, 2>* >(node));
-      if (fullyConnect) {
+      if (fullyConnect && node != NULL) {
         node->SetConnection(CHILD, dynamic_cast<Node<Type, 2>* >(this));
+        this->SetConnection(PARENT, dynamic_cast<Node<Type, 2>* >(node));
+      }
+      else {
+        this->SetConnection(PARENT, node != NULL ? dynamic_cast<Node<Type, 2>* >(node) : NULL);
       }
     }
 
     // Set the child node.
     __inline void SetChild(BiDirectionalNode<Type>* node, bool fullyConnect = false) {
-      this->SetConnection(CHILD, dynamic_cast<Node<Type, 2>* >(node));
-      if (fullyConnect) {
+
+      if (fullyConnect && node != NULL) {
         node->SetConnection(PARENT, dynamic_cast<Node<Type, 2>* >(this));
+        this->SetConnection(CHILD, dynamic_cast<Node<Type, 2>* >(node));
+      }
+      else {
+        this->SetConnection(CHILD, node != NULL ? dynamic_cast<Node<Type, 2>* >(node) : NULL);
       }
     }
 
     // Get the child node.
     __inline BiDirectionalNode<Type>* GetChild() {
-      return dynamic_cast<BiDirectionalNode<Type>* >(GetConnection(CHILD));
+      Node<Type,2>* child = GetConnection(CHILD);
+      return child != NULL ? dynamic_cast<BiDirectionalNode<Type>* >(child) : NULL;
     }
 
     // Get the parent node.
     __inline BiDirectionalNode<Type>* GetParent() {
-      return dynamic_cast<BiDirectionalNode<Type>* >(GetConnection(PARENT));
+      Node<Type, 2>* parent = GetConnection(PARENT);
+      return parent != NULL ? dynamic_cast<BiDirectionalNode<Type>* >(parent) : NULL;
     }
 
   private:
