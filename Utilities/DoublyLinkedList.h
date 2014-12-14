@@ -11,7 +11,6 @@
 #endif
 
 #include "Node.h"
-#include "Iterator.h"
 
 namespace DataStructures
 {
@@ -51,29 +50,34 @@ namespace DataStructures
     }
 
   private:
+    enum Connections {
+      PARENT = 0,
+      CHILD = 1
+    };
+
     // Fetch a node at index.
     // This function will shorten the indexed search to half by branching and starting from 0 or from myCount, depending on shortest path.
-    __inline BiDirectionalNode<Type>* GetNodeAt(const unsigned int& index) const {
+    __inline Node<Type, 2>* GetNodeAt(const unsigned int& index) const {
       assert((index >= 0) && (index < myCount) && "Index out of bounds.");
-      BiDirectionalNode<Type>* n = NULL;
+      Node<Type, 2>* n = NULL;
       // To make the search optimal, we check if the index is more or less than half, then we decide which way we go.
       if ((myCount -1) * 0.5 > index) { // Count/2 is more than index, so we go from first and forward.
         n = myFirst;
         for (unsigned int i = 0; i < index; i++) {
-          n = n->GetChild();
+          n = n->GetConnection(CHILD);
         }
       }
       else {  // Count/2 is less than index, so we go from last and backward.
         n = myLast;
         for (unsigned int i = myCount - 1; i-- > index;) {
-          n = n->GetParent();
+          n = n->GetConnection(PARENT);
         }
       }
       return n;
     }
     
-    BiDirectionalNode<Type>* myFirst;
-    BiDirectionalNode<Type>* myLast;
+    Node<Type, 2>* myFirst;
+    Node<Type, 2>* myLast;
     unsigned int myCount;
   };
 
@@ -99,9 +103,9 @@ namespace DataStructures
   // Destructor.
   DoublyLinkedList<Type>::~DoublyLinkedList()
   {
-    BiDirectionalNode<Type>* n = myFirst;
+    Node<Type, 2>* n = myFirst;
     while (n != NULL) {
-      BiDirectionalNode<Type>* tmp = n->GetChild();
+      Node<Type, 2>* tmp = n->GetConnection(CHILD);
       delete n;
       n = tmp;
     }
@@ -138,12 +142,13 @@ namespace DataStructures
   // Add a value to the end of the list, returns the index.
   bool DoublyLinkedList<Type>::Add(const Type& object)
   {
-    BiDirectionalNode<Type>* node = new BiDirectionalNode<Type>(object);
+    Node<Type, 2>* node = new Node<Type, 2>(object);
     if (myFirst == NULL) {
       myFirst = node;
       myLast = myFirst;
     } else {
-      myLast->SetChild(node, true);
+      myLast->SetConnection(CHILD, node);
+      node->SetConnection(PARENT, myLast);
       myLast = node;
     }
     myCount++;
@@ -155,10 +160,12 @@ namespace DataStructures
   // Inserts a value into a given index of the list.
   bool DoublyLinkedList<Type>::Insert(const Type& object, const unsigned int& index)
   {
-    BiDirectionalNode<Type>* node = GetNodeAt(index);
-    BiDirectionalNode<Type>* newNode = new BiDirectionalNode<Type>(object);
-    newNode->SetParent(node->GetParent(), true);
-    node->SetParent(newNode, true);
+    Node<Type, 2>* node = GetNodeAt(index);
+    Node<Type, 2>* newNode = new Node<Type, 2>(object);
+    newNode->SetConnection(PARENT, node->GetConnection(PARENT));
+    node->GetConnection(PARENT)->SetConnection(CHILD, newNode);
+    node->SetConnection(PARENT, newNode);
+    newNode->SetConnection(CHILD, node);
     myCount++;
     return true;
   }
@@ -168,13 +175,14 @@ namespace DataStructures
   // Insert a value first in the list.
   bool DoublyLinkedList<Type>::AddFirst(const Type& object)
   {
-    BiDirectionalNode<Type>* node = new BiDirectionalNode<Type>(object);
+    Node<Type, 2>* node = new Node<Type, 2>(object);
     if (myFirst == NULL) {
       myFirst = node;
       myLast = node;
       return true;
     }
-    myFirst->SetParent(node, true);
+    myFirst->SetConnection(PARENT, node);
+    node->SetConnection(CHILD, myFirst);
     myFirst = node;
     myCount++;
     return true;
@@ -184,13 +192,14 @@ namespace DataStructures
   // Insert a value last in the list.
   bool DoublyLinkedList<Type>::AddLast(const Type& object)
   {
-    BiDirectionalNode<Type>* node = new BiDirectionalNode<Type>(object);
+    Node<Type, 2>* node = new Node<Type, 2>(object);
     if (myFirst == NULL) {
       myFirst = node;
       myLast = node;
       return true;
     }
-    myLast->SetChild(node, true);
+    myLast->SetConnection(CHILD, node);
+    node->SetConnection(PARENT, myLast);
     myLast = node;
     myCount++;
     return true;
@@ -201,18 +210,20 @@ namespace DataStructures
   // This function will locate the first node that contains given value and remove it.
   bool DoublyLinkedList<Type>::Remove(const Type& object)
   {
-    BiDirectionalNode<Type>* node = myFirst;
+    Node<Type, 2>* node = myFirst;
     while (node != NULL) {
       if (node->GetValue() == object) {
         break;
       }
-      node = node->GetChild();
+      node = node->GetConnection(CHILD);
     }
-    if (node->GetParent() != NULL) {
-      node->GetParent()->SetChild(node->GetChild(), true);
+    if (node->GetConnection(PARENT) != NULL) {
+      Node<Type, 2>* parent = node->GetConnection(PARENT);
+      parent->SetConnection(CHILD, node->GetConnection(CHILD));
+      node->GetConnection(CHILD)->SetConnection(PARENT, parent);
     }
     else{
-      myFirst = node->GetChild();
+      myFirst = node->GetConnection(CHILD);
       if (myFirst == NULL) {
         myLast = NULL;
       }
@@ -226,8 +237,10 @@ namespace DataStructures
   // Remove an object by index from the list.
   bool DoublyLinkedList<Type>::RemoveAtIndex(const unsigned int& index)
   {
-    BiDirectionalNode<Type>* node = GetNodeAt(index);
-    node->GetParent()->SetChild(node->GetChild(), true);
+    Node<Type, 2>* node = GetNodeAt(index);
+    Node<Type, 2>* parent = node->GetConnection(PARENT);
+    parent->SetConnection(CHILD, node->GetConnection(CHILD));
+    node->GetConnection(CHILD)->SetConnection(PARENT, parent);
     delete node;
     myCount--;
     return true;
@@ -237,9 +250,9 @@ namespace DataStructures
   // Clears the list.
   bool DoublyLinkedList<Type>::RemoveAll()
   {
-    BiDirectionalNode<Type>* temp = NULL;
+    Node<Type, 2>* temp = NULL;
     while (myFirst != NULL) {
-      temp = myFirst->GetChild();
+      temp = myFirst->GetConnection(CHILD);
       delete myFirst;
       myFirst = temp;
     }
@@ -252,12 +265,12 @@ namespace DataStructures
   // If none is found, the lists count will be returned (ie. max index+1).
   unsigned int DoublyLinkedList<Type>::IndexOf(const Type& object)
   {
-    BiDirectionalNode<Type>* node = myFirst;
+    Node<Type, 2>* node = myFirst;
     for (unsigned int i = 0; i < myCount; i++) {
       if (node->GetValue() == object) {
         return i;
       }
-      node = node->GetChild();
+      node = node->GetConnection(CHILD);
     }
     return myCount;
   }

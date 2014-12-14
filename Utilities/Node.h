@@ -64,6 +64,7 @@ namespace DataStructures
       return myConnections[index];
     }
 
+    // Get the value object of current node.
     __inline virtual const Type& GetValue() {
       return myObject;
     }
@@ -71,58 +72,6 @@ namespace DataStructures
   private:
     DataStructures::Array<Node<Type, Connections>*, Connections> myConnections;
     Type myObject;
-  };
-
-
-  template<typename Type>
-  // Bidirectional node (one child, one parent).
-  class BiDirectionalNode : public Node < Type, 2 >
-  {
-  public:
-    __inline BiDirectionalNode(const Type& object) : Node(object)
-    {
-    }
-
-    // Set the parent node.
-    __inline void SetParent(BiDirectionalNode<Type>* node, bool fullyConnect = false) {
-      if (fullyConnect && node != NULL) {
-        node->SetConnection(CHILD, dynamic_cast<Node<Type, 2>* >(this));
-        this->SetConnection(PARENT, dynamic_cast<Node<Type, 2>* >(node));
-      }
-      else {
-        this->SetConnection(PARENT, node != NULL ? dynamic_cast<Node<Type, 2>* >(node) : NULL);
-      }
-    }
-
-    // Set the child node.
-    __inline void SetChild(BiDirectionalNode<Type>* node, bool fullyConnect = false) {
-
-      if (fullyConnect && node != NULL) {
-        node->SetConnection(PARENT, dynamic_cast<Node<Type, 2>* >(this));
-        this->SetConnection(CHILD, dynamic_cast<Node<Type, 2>* >(node));
-      }
-      else {
-        this->SetConnection(CHILD, node != NULL ? dynamic_cast<Node<Type, 2>* >(node) : NULL);
-      }
-    }
-
-    // Get the child node.
-    __inline BiDirectionalNode<Type>* GetChild() {
-      Node<Type,2>* child = GetConnection(CHILD);
-      return child != NULL ? dynamic_cast<BiDirectionalNode<Type>* >(child) : NULL;
-    }
-
-    // Get the parent node.
-    __inline BiDirectionalNode<Type>* GetParent() {
-      Node<Type, 2>* parent = GetConnection(PARENT);
-      return parent != NULL ? dynamic_cast<BiDirectionalNode<Type>* >(parent) : NULL;
-    }
-
-  private:
-    enum Connections {
-      PARENT = 0,
-      CHILD = 1
-    };
   };
 }
 
