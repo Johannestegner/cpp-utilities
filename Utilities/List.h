@@ -10,7 +10,7 @@
 #define NULL 0
 #endif
 
-namespace Datastructures
+namespace DataStructures
 {
   template <class Type, class CountType = unsigned int>
   // Dynamically growing array.
@@ -24,26 +24,26 @@ namespace Datastructures
     
     void Init(const CountType& start, const CountType& growth);
     void ReInit(const CountType& start, const CountType& growth);
-    inline CountType Add(const Type& object);
-    inline void Insert(const CountType& index, const Type& object);
+    CountType Add(const Type& object);
+    void Insert(const CountType& index, const Type& object);
 
-    inline void Remove(const Type& object, const bool& keepOrder = true);
-    inline void RemoveAtIndex(const CountType& index, const bool& keepOrder = true);
-    inline void Delete(const Type& object, const bool& keepOrder = true);
-    inline void DeleteAtIndex(const CountType& index, const bool& keepOrder = true);
+    void Remove(const Type& object, const bool& keepOrder = true);
+    void RemoveAtIndex(const CountType& index, const bool& keepOrder = true);
+    void Delete(const Type& object, const bool& keepOrder = true);
+    void DeleteAtIndex(const CountType& index, const bool& keepOrder = true);
 
-    inline bool Contains(const Type& object);
+    bool Contains(const Type& object);
     inline void Clear();
     inline void RemoveAll();
     inline void DeleteAll();
 
-    // True if the stack has no more items, else false.
+    // True if the list has no items, else false.
     __inline const bool IsEmpty() const 
     {
       return myCurrentNumberOfItems == 0;
     }
 
-    // True if the stack has more items, else false.
+    // True if the list has items, else false.
     __inline const bool HasItems() const 
     {
       return myCurrentNumberOfItems != 0;

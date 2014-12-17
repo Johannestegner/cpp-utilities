@@ -73,6 +73,25 @@ namespace TestUtilities
       Assert::IsNotNull(o1);
     }
 
+    TEST_METHOD(DoublyLinkedList_CopyAssign)
+    {
+      for (int i = 0; i < 5; i++) {
+        myObjectPointerDll.Add(new TestObject(i));
+      }
+      DoublyLinkedList<TestObject*> copy1 = DoublyLinkedList<TestObject*>(myObjectPointerDll);
+      DoublyLinkedList<TestObject*> copy2 = myObjectPointerDll;
+      Assert::AreEqual(myObjectPointerDll.Count(), copy1.Count());
+      Assert::AreEqual(myObjectPointerDll.Count(), copy2.Count());
+      for (int i = 0; i < 5; i++) {
+        Assert::AreEqual(myObjectPointerDll[i]->myInt, copy1.Get(i)->myInt);
+        Assert::AreEqual(myObjectPointerDll[i]->myInt, copy2[i]->myInt);
+      }
+
+
+
+
+    }
+
 
   private:
     DoublyLinkedList<int> myIntDll;

@@ -20,39 +20,39 @@ namespace DataStructures
   {
   public:
 
-    __inline Iterator() {
-      this->node = NULL;
+    Iterator() {
+      myNode = NULL;
     }
 
     // Destructor.
-    __inline ~Iterator() {
-      this->node = NULL;
+    ~Iterator() {
+      myNode = NULL;
     }
 
     // Get value and move iterrator forward.
     __inline const Type& Next() {
-      Node* temp = node;
-      node = node->GetConnection(1);
+      Node* temp = myNode;
+      myNode = myNode->GetConnection(1);
       return temp->myObject;
     }
 
     // Check if thee iterator has neext.
     __inline bool HasNext() const {
-      return node->myConnections[1];
+      return myNode->myConnections[1] != NULL;
     }
 
     // Get value from current.
     __inline const Type& Value() const {
-      return node->myObject;
+      return myNode->myObject;
     }
 
     // Initialize the iterator (this can be used to re-init a iterator too).
     __inline void Init(Node<Type, Connections>* first) {
-      this->node = first;
+      myNode = first;
     }
 
   private:
-    Node<Type, Connections>* node;
+    Node<Type, Connections>* myNode;
   };
 }
 

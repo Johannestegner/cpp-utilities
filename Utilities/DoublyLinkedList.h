@@ -11,6 +11,8 @@
 #endif
 
 #include "Node.h"
+#include "List.h"
+#include "Iterator.h"
 
 namespace DataStructures
 {
@@ -23,7 +25,7 @@ namespace DataStructures
     DoublyLinkedList(DoublyLinkedList<Type>& copy);
     ~DoublyLinkedList();
     inline const DoublyLinkedList& operator=(const DoublyLinkedList& aArray);
-    inline const Type& operator[](const unsigned int& aIndex) const;
+    const Type& operator[](const unsigned int& aIndex) const;
     const Type& Get(const unsigned int& index);
     bool Add(const Type& object);
     bool Insert(const Type& object, const unsigned int& index);
@@ -33,9 +35,12 @@ namespace DataStructures
     bool RemoveAtIndex(const unsigned int& index);
     bool RemoveAll();
     unsigned int IndexOf(const Type& object);
+    List<Type> ToList();
+    Iterator<Type, 2> GetIterator();
+
 
     // Clear the list.
-    __inline bool Clear() {
+    bool Clear() {
       RemoveAll();
     }
 
@@ -57,7 +62,7 @@ namespace DataStructures
 
     // Fetch a node at index.
     // This function will shorten the indexed search to half by branching and starting from 0 or from myCount, depending on shortest path.
-    __inline Node<Type, 2>* GetNodeAt(const unsigned int& index) const {
+    Node<Type, 2>* GetNodeAt(const unsigned int& index) const {
       assert((index >= 0) && (index < myCount) && "Index out of bounds.");
       Node<Type, 2>* n = NULL;
       // To make the search optimal, we check if the index is more or less than half, then we decide which way we go.
@@ -273,6 +278,32 @@ namespace DataStructures
       node = node->GetConnection(CHILD);
     }
     return myCount;
+  }
+
+  template<class Type>
+  // Converts the linked list into a List<Type> structure and returns it.
+  // This will not change the original list.
+  List<Type> DoublyLinkedList<Type>::ToList()
+  {
+    List<Type> arr;
+    arr.Init(myCount, 10);
+    Node<Type, 2>* node = myFirst;
+    while (node != NULL) {
+      arr.Add(node->GetValue());
+      node = node->GetConnection(CHILD);
+    }
+    return arr;
+  }
+
+  template<class Type>
+  // Creates a iterator of the node collection.
+  // The nodes are the same as in the linked list,
+  // so changes to the values will apply to both the iterator and the linked list.
+  Iterator<Type, 2> DoublyLinkedList<Type>::GetIterator()
+  {
+    Iterator<Type, 2> i;
+    i.Init(myFirst);
+    return i;
   }
 }
 

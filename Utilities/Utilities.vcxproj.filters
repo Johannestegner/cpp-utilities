@@ -42,5 +42,8 @@
     <ClInclude Include="DoublyLinkedList.h">
       <Filter>Datastructures</Filter>
     </ClInclude>
+    <ClInclude Include="SingleLinkedList.h">
+      <Filter>Datastructures</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

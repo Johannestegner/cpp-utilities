@@ -3,7 +3,7 @@
 #include "List.h"
 #include "TestObject.h"
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
-using namespace Datastructures;
+using namespace DataStructures;
 
 #define uint unsigned int // Im lazy.
 

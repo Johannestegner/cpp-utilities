@@ -58,12 +58,12 @@ namespace Datastructures
     class Node
     {
     public:
-      __inline Node(const Type& aObject)
+      Node(const Type& aObject)
       {
         myItem = aObject;
       }
       
-      __inline ~Node()
+      ~Node()
       {
       }
 

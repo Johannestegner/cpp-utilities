@@ -22,7 +22,7 @@ namespace DataStructures
   public:
 
     // Constructor.
-    __inline Node(const Type& object) {
+    Node(const Type& object) {
       for (unsigned short i = 0; i < Connections; i++) {
         myConnections[i] = NULL;
       }
@@ -30,14 +30,14 @@ namespace DataStructures
     }
 
     // Default constructor.
-    __inline Node() {
+    Node() {
       for (unsigned short i = 0; i < Connections; i++) {
         myConnections[i] = NULL;
       }
     }
 
     // Copy constructor.
-    __inline Node(const Node<Type, Connections>& copy) {
+    Node(const Node<Type, Connections>& copy) {
       for (unsigned short i = 0; i < Connections; i++) {
         this->myConnections[i] = copy->myConnections[i];
       }
@@ -45,7 +45,7 @@ namespace DataStructures
     }
 
     // Destructor.
-    __inline virtual ~Node() {
+    virtual ~Node() {
       for (unsigned short i = Connections; i-- > 0;) {
         this->myConnections[i] = NULL;
       }
