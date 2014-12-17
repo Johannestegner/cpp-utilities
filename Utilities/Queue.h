@@ -10,8 +10,9 @@
 #endif
 
 #include <assert.h>
+#include "Node.h"
 
-namespace Datastructures
+namespace DataStructures
 {
   template<class Type>
   // First in - last out queue.
@@ -50,38 +51,18 @@ namespace Datastructures
     }
 
   private:
-
-    template<class Type>
-    // Node structure.
-    class Node
-    {
-    public:
-
-      Node(const Type& aObject)
-      {
-        myItem = aObject;
-      }
-
-      ~Node() 
-      {
-      }
-
-    private:
-      Type myItem;
-      Node *myChild = NULL;
-      friend class Queue;
-    };
-
-    unsigned int myCount = 0;
-    Node<Type>* myFirst = NULL;
-    Node<Type>* myLast = NULL;
+    unsigned int myCount;
+    Node<Type, 1>* myFirst;
+    Node<Type, 1>* myLast;
   };
 
 
   template<class Type>
   Queue<Type>::Queue()
   {
-
+    myCount = 0;
+    myFirst = NULL;
+    myLast = NULL;
   }
 
 
@@ -103,13 +84,13 @@ namespace Datastructures
   // Enqueue an item to the queue.
   void Queue<Type>::Enqueue(const Type& aObject)
   {
-    Node<Type>* node = new Node<Type>(aObject);
+    Node<Type, 1>* node = new Node<Type, 1>(aObject);
     if (myFirst == NULL) {
       myFirst = node;
       myLast = node;
     }
     else {
-      myLast->myChild = node;
+      myLast->SetConnection(0, node);
       myLast = node;
     }
     myCount++;
@@ -121,17 +102,18 @@ namespace Datastructures
   Type Queue<Type>::Dequeue()
   {
     assert(myCount != 0 && "Can not dequeue an item from a empty queue.");
-    Node<Type>* item = myFirst;
-    if (myFirst->myChild == NULL) {
+    Type value = myFirst->GetValue();
+    if (myFirst->GetConnection(0) == NULL) {
+      delete myFirst;
       myFirst = NULL;
     }
     else {
-      myFirst = myFirst->myChild;
+      Node<Type, 1>* child = myFirst->GetConnection(0);
+      delete myFirst;
+      myFirst = child;
     }
     myCount--;
-    Type ret = item->myItem;
-    delete item;
-    return ret;
+    return value;
   }
 
   template<class Type>
@@ -139,18 +121,18 @@ namespace Datastructures
   const Type& Queue<Type>::Peek() const
   {
     assert(myCount != 0 && "Can not peek on a empty queue.");
-    return myFirst->myItem;
+    return myFirst->GetValue();
   }
   template<class Type>
   // Chech if an item exists in the queue.
   const bool Queue<Type>::Contains(const Type& aObject) const
   {
-    Node<Type>* node = myFirst;
+    Node<Type, 1>* node = myFirst;
     while (node != NULL) {
-      if (node->myItem == aObject) {
+      if (node->GetValue() == aObject) {
         return true;
       }
-      node = node->myChild;
+      node = node->GetConnection(0);
     }
     return false;
   }
@@ -163,7 +145,7 @@ namespace Datastructures
       return;
     }
     do {
-      Node<Type>* child = myFirst->myChild;
+      Node<Type, 1>* child = myFirst->GetConnection(0);
       delete myFirst;
       myFirst = child;
     } while (myFirst != NULL);

@@ -3,7 +3,7 @@
 #include "TestObject.h"
 #include "Queue.h"
 
-using namespace Datastructures;
+using namespace DataStructures;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace TestUtilities
