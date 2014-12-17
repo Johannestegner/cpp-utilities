@@ -3,7 +3,7 @@
 #include "Stack.h"
 #include "TestObject.h"
 
-using namespace Datastructures;
+using namespace DataStructures;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace TestUtilities

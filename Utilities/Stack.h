@@ -10,15 +10,15 @@
 #endif
 
 #include <assert.h>
+#include "Node.h"
 
-namespace Datastructures
+namespace DataStructures
 {
   template <class Type>
   // Last in - first out queue.
   class Stack
   {
   public:
-
     Stack();
     Stack(const Stack<Type>& aStack);
     ~Stack();
@@ -54,27 +54,8 @@ namespace Datastructures
     }
 
   private:
-    template<class Type>
-    class Node
-    {
-    public:
-      Node(const Type& aObject)
-      {
-        myItem = aObject;
-      }
-      
-      ~Node()
-      {
-      }
-
-    private:
-      Type myItem;
-      Node* myChild = NULL;
-      friend class Stack;
-    };
-
-    unsigned int myCount = 0;
-    Node<Type>* myFirst = NULL;
+    unsigned int myCount= 0;
+    Node<Type, 1>* myFirst;
   };
   
 
@@ -82,7 +63,8 @@ namespace Datastructures
   template <class Type>
   Stack<Type>::Stack()
   {
-
+    myCount = 0;
+    myFirst = NULL;
   }
 
   template <class Type>
@@ -106,7 +88,7 @@ namespace Datastructures
       return;
     }
     do {
-      Node<Type>* child = myFirst->myChild;
+      Node<Type, 1>* child = myFirst->GetConnection(0);
       delete myFirst;
       myFirst = child;
     } while (myFirst != NULL);
@@ -117,12 +99,12 @@ namespace Datastructures
   // Check if the stack contains the given object.
   bool Stack<Type>::Contains(const Type& aObject) const
   {
-    Node<Type>* node = myFirst;
+    Node<Type, 1>* node = myFirst;
     while (node != NULL) {
-      if (node->myItem == aObject) {
+      if (node->GetValue() == aObject) {
         return true;
       }
-      node = node->myChild;
+      node = node->GetConnection(0);
     }
     return false;
   }
@@ -132,17 +114,18 @@ namespace Datastructures
   Type Stack<Type>::Pop()
   {
     assert(myCount != 0 && "Can not pop a item from an empty stack.");
-    Node<Type>* item = myFirst;
-    if (myFirst->myChild == NULL) {
+    Type value = myFirst->GetValue();
+    if (myFirst->GetConnection(0) == NULL) {
+      delete myFirst;
       myFirst = NULL;
     }
     else {
-      myFirst = myFirst->myChild;
+      Node<Type, 1>* child = myFirst->GetConnection(0);
+      delete myFirst;
+      myFirst = child;
     }
     myCount--;
-    Type returnValue = item->myItem;
-    delete item;
-    return returnValue;
+    return value;
   }
 
   template <class Type>
@@ -150,19 +133,19 @@ namespace Datastructures
   const Type& Stack<Type>::Peek()
   {
     assert(myCount != 0 && "Can not peek on a empty stack.");
-    return myFirst->myItem;
+    return myFirst->GetValue();
   }
 
   template <class Type>
   // Push an item onto the stack.
   void Stack<Type>::Push(const Type& aObject)
   {
-    Node<Type>* node = new Node<Type>(aObject);
+    Node<Type, 1>* node = new Node<Type, 1>(aObject);
     if (myFirst == NULL) {
       myFirst = node;
     }
     else {
-      node->myChild = myFirst;
+      node->SetConnection(0, myFirst);
       myFirst = node;
     }
     myCount++;
