@@ -88,6 +88,22 @@ namespace TestUtilities
 
     }
 
+    TEST_METHOD(Stack_CopyAssign)
+    {
+      for (int i = 0; i < 5; i++) {
+        myObjectPointerStack.Push(new TestObject(i));
+      }
+      Stack<TestObject*> copy1 = Stack<TestObject*>(myObjectPointerStack);
+      Stack<TestObject*> copy2 = myObjectPointerStack;
+      Assert::AreEqual(myObjectPointerStack.Count(), copy1.Count());
+      Assert::AreEqual(myObjectPointerStack.Count(), copy2.Count());
+      for (int i = 0; i < 5; i++) {
+        int d = myObjectPointerStack.Pop()->myInt;
+        Assert::AreEqual(d, copy1.Pop()->myInt);
+        Assert::AreEqual(d, copy2.Pop()->myInt);
+      }
+    }
+
   private:
     Stack<int> myIntStack;
     Stack<TestObject*> myObjectPointerStack;

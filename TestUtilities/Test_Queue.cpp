@@ -84,6 +84,22 @@ namespace TestUtilities
       Assert::AreEqual(myIntQueue.Size() & myIntQueue.Count(), (unsigned int)0, L"Size was not 0.");
     }
 
+    TEST_METHOD(Queue_CopyAssign)
+    {
+      for (int i = 0; i < 5; i++) {
+        myObjectPointerQueue.Enqueue(new TestObject(i));
+      }
+      Queue<TestObject*> copy1 = Queue<TestObject*>(myObjectPointerQueue);
+      Queue<TestObject*> copy2 = myObjectPointerQueue;
+      Assert::AreEqual(myObjectPointerQueue.Count(), copy1.Count());
+      Assert::AreEqual(myObjectPointerQueue.Count(), copy2.Count());
+      for (int i = 0; i < 5; i++) {
+        int d = myObjectPointerQueue.Dequeue()->myInt;
+        Assert::AreEqual(d, copy1.Dequeue()->myInt);
+        Assert::AreEqual(d, copy2.Dequeue()->myInt);
+      }
+    }
+
   private:
     Queue<int> myIntQueue;
     Queue<TestObject*> myObjectPointerQueue;

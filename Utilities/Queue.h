@@ -27,6 +27,7 @@ namespace DataStructures
     const Type& Peek() const;
     const bool Contains(const Type& aObject) const;
     void Clear();
+    inline const Queue& operator=(const Queue& cpy);
 
     // If the queue have more items in it or is empty.
     __inline const bool HasMore() const
@@ -54,6 +55,18 @@ namespace DataStructures
     unsigned int myCount;
     Node<Type, 1>* myFirst;
     Node<Type, 1>* myLast;
+
+    // Fetch a node at index.
+    Node<Type, 1>* GetNodeAt(const unsigned int& index) const {
+      assert((index >= 0) && (index < myCount) && "Index out of bounds.");
+      Node<Type, 1>* n = NULL;
+      n = myFirst;
+      for (unsigned int i = 0; i < index; i++) {
+        n = n->GetConnection(0);
+      }
+      return n;
+    }
+
   };
 
 
@@ -67,17 +80,26 @@ namespace DataStructures
 
 
   template<class Type>
-  Queue<Type>::Queue(const Queue& aQueue)
+  Queue<Type>::Queue(const Queue<Type>& aQueue)
   {
-    myCount = aQueue.Count;
-    myFirst = aQueue.myFirst;
-    myLast = aQueue.myLast;
+    myCount = aQueue.myCount;
+    myFirst = aQueue.myFirst->Copy();
+    myLast = GetNodeAt(myCount - 1);
   }
 
   template<class Type>
   Queue<Type>::~Queue()
   {
     Clear();
+  }
+
+  template<class Type>
+  const Queue<Type>& Queue<Type>::operator=(const Queue& cpy) 
+  {
+    cpy->myCount = myCount;
+    cpy->myFirst = myFirst->Copy();
+    cpy->myLast = cpy->GetNodeAt(myCount - 1, true);
+    return *this;
   }
 
   template<class Type>

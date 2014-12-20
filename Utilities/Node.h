@@ -69,6 +69,21 @@ namespace DataStructures
       return myObject;
     }
 
+    // Recursivly copies (new node pointer but the same value) the node and all its children and returns as a Node<Type, Connections> object.
+    Node<Type, Connections>* Copy(int parent = -1) {
+      Node<Type, Connections>* cpy = new Node<Type, Connections>(myObject);
+      for (int i = Connections; i-- > 0;) {
+        if (i != parent) {
+          Node<Type, Connections>* childCpy = myConnections[i] != NULL ? myConnections[i]->Copy(parent) : NULL;
+          cpy->myConnections[i] = childCpy;
+          if (childCpy != NULL && parent != -1) {
+            childCpy->myConnections[parent] = cpy;
+          }
+        }
+      }
+      return cpy;
+    }
+
   private:
     DataStructures::Array<Node<Type, Connections>*, Connections> myConnections;
     Type myObject;

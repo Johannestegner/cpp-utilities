@@ -38,7 +38,6 @@ namespace DataStructures
     List<Type> ToList();
     Iterator<Type, 2> GetIterator();
 
-
     // Clear the list.
     bool Clear() {
       RemoveAll();
@@ -62,11 +61,11 @@ namespace DataStructures
 
     // Fetch a node at index.
     // This function will shorten the indexed search to half by branching and starting from 0 or from myCount, depending on shortest path.
-    Node<Type, 2>* GetNodeAt(const unsigned int& index) const {
+    Node<Type, 2>* GetNodeAt(const unsigned int& index, bool startFromOne = false) const {
       assert((index >= 0) && (index < myCount) && "Index out of bounds.");
       Node<Type, 2>* n = NULL;
       // To make the search optimal, we check if the index is more or less than half, then we decide which way we go.
-      if ((myCount -1) * 0.5 > index) { // Count/2 is more than index, so we go from first and forward.
+      if ((myCount - 1) * 0.5 > index || startFromOne) { // Count/2 is more than index, so we go from first and forward.
         n = myFirst;
         for (unsigned int i = 0; i < index; i++) {
           n = n->GetConnection(CHILD);
@@ -100,19 +99,22 @@ namespace DataStructures
   DoublyLinkedList<Type>::DoublyLinkedList(DoublyLinkedList<Type>& copy) 
   {
     this->myCount = copy.myCount;
-    this->myFirst = copy.myFirst;
-    this->myLast = copy.myLast;
+    // Copy the whole list.
+    this->myFirst = copy.myFirst->Copy(0);
+    // Then iterate and find the last one.
+    this->myLast = GetNodeAt(myCount - 1, true);
   }
+
   
   template<class Type>
   // Destructor.
   DoublyLinkedList<Type>::~DoublyLinkedList()
   {
-    Node<Type, 2>* n = myFirst;
-    while (n != NULL) {
-      Node<Type, 2>* tmp = n->GetConnection(CHILD);
-      delete n;
-      n = tmp;
+    Node<Type, 2>* tmp = NULL;
+    while (myFirst != NULL) {
+      tmp = myFirst->GetConnection(CHILD);
+      delete myFirst;
+      myFirst = tmp;
     }
     myFirst = NULL;
     myLast = NULL;
@@ -123,8 +125,8 @@ namespace DataStructures
   const DoublyLinkedList<Type>& DoublyLinkedList<Type>::operator=(const DoublyLinkedList<Type>& aDll)
   {
     aDll->myCount = myCount;
-    aDll->myFirst = myFirst;
-    aDll->myLast = myLast;
+    aDll->myFirst = myFirst->Copy(0);
+    aDll->myLast = aDll->GetNodeAt(myCount - 1, true);
     return *this;
   }
 

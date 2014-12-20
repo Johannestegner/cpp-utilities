@@ -86,10 +86,6 @@ namespace TestUtilities
         Assert::AreEqual(myObjectPointerDll[i]->myInt, copy1.Get(i)->myInt);
         Assert::AreEqual(myObjectPointerDll[i]->myInt, copy2[i]->myInt);
       }
-
-
-
-
     }
 
 

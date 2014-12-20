@@ -28,6 +28,7 @@ namespace DataStructures
     Type Pop();
     const Type& Peek();
     void Push(const Type& aObject);
+    inline const Stack& operator=(const Stack& cpy);
     
     // True if the stack has no more items, else false.
     __inline bool IsEmpty() const
@@ -71,13 +72,21 @@ namespace DataStructures
   Stack<Type>::Stack(const Stack<Type>& aStack)
   {
     myCount = aStack.myCount;
-    myFirst = aStack.myFirst;
+    myFirst = aStack.myFirst->Copy();
   }
 
   template <class Type>
   Stack<Type>::~Stack()
   {
     Clear();
+  }
+  
+  template<class Type>
+  const Stack<Type>& Stack<Type>::operator=(const Stack& cpy)
+  {
+    cpy->myCount = myCount;
+    cpy->myFirst = myFirst->Copy();
+    return *this;
   }
 
   template <class Type>
