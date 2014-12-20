@@ -20,9 +20,7 @@ namespace TestUtilities
       Array<int, 2> test = myIntArray;
       Assert::AreEqual(0, test[0], L"Index 0 was not 0.");
       Assert::AreEqual(1, test[1], L"Index 1 was not 1.");
-
-
-
+      
       myObjectPointerArray[0] = new TestObject(0);
       myObjectPointerArray[1] = new TestObject(1);
       Assert::AreEqual(0, myObjectPointerArray[0]->myInt, L"Index 0 was not 0.");
