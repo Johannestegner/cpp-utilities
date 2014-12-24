@@ -100,9 +100,9 @@ namespace DataStructures
   // Copy.
   inline const SingleLinkedList<Type, CountType>& SingleLinkedList<Type, CountType>::operator=(const SingleLinkedList<Type, CountType>& list)
   {
-    list->myCount = myCount;
-    list->myFirst = myFirst->Copy(0);
-    list->myLast = list->GetNodeAt(myCount - 1);
+    myCount = list->myCount;
+    myFirst = list->myFirst->Copy(0);
+    myLast = GetNodeAt(myCount - 1);
     return *this;
   }
 

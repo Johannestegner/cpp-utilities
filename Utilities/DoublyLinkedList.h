@@ -124,9 +124,9 @@ namespace DataStructures
   // Overriden set operator.
   const DoublyLinkedList<Type>& DoublyLinkedList<Type>::operator=(const DoublyLinkedList<Type>& aDll)
   {
-    aDll->myCount = myCount;
-    aDll->myFirst = myFirst->Copy(0);
-    aDll->myLast = aDll->GetNodeAt(myCount - 1, true);
+    myCount = aDll->myCount;
+    myFirst = aDll->myFirst->Copy(0);
+    myLast = GetNodeAt(myCount - 1, true);
     return *this;
   }
 

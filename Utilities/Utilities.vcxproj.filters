@@ -16,6 +16,9 @@
     <Filter Include="Datastructures">
       <UniqueIdentifier>{f2c0686e-6587-42c7-bebb-e5c43b6ad231}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{b13eab81-1ad0-4e4b-a086-9f806238c5e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FileReader.h">
@@ -44,6 +47,15 @@
     </ClInclude>
     <ClInclude Include="SingleLinkedList.h">
       <Filter>Datastructures</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector3.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="MathHelpers.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector2.h">
+      <Filter>Math</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
