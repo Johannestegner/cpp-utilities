@@ -20,6 +20,7 @@ namespace Math
     Vector2();
     Vector2(const Type& x, const Type& y);
     Vector2(const Vector2& copy);
+    ~Vector2();
 
     Vector2& operator +=(const Vector2& vector);
     Vector2& operator -=(const Vector2& vector);
@@ -100,6 +101,13 @@ namespace Math
   Vector2<Type>::Vector2(const Vector2<Type>& copy)
   {
     Set(copy.myX, copy.myY);
+  }
+
+  template <class Type>
+  // Destructor.
+  Vector2<Type>::Vector2() 
+  {
+
   }
 
   template <class Type>
