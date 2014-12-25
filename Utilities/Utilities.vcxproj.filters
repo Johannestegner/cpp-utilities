@@ -60,5 +60,8 @@
     <ClInclude Include="Vector4.h">
       <Filter>Math</Filter>
     </ClInclude>
+    <ClInclude Include="Matrix33.h">
+      <Filter>Math</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
