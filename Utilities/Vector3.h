@@ -59,25 +59,29 @@ namespace Math
     }
 
     // Set the X value of the vector.
-    __inline void SetX(const Type& value) {
+    __inline Vector3& SetX(const Type& value) {
       myX = value;
+      return *this;
     }
 
     // Set the Y value of the vector.
-    __inline void SetY(const Type& value) {
+    __inline Vector3& SetY(const Type& value) {
       myY = value;
+      return *this;
     }
 
     // Set the Z value of the vector.
-    __inline void SetZ(const Type& value) {
+    __inline Vector3& SetZ(const Type& value) {
       myZ = value;
+      return *this;
     }
 
     // Set all the values of the vector.
-    __inline void Set(const Type& x, const Type& y, const Type& z) {
+    __inline Vector3& Set(const Type& x, const Type& y, const Type& z) {
       myX = x;
       myY = y;
       myZ = z;
+      return *this;
     }
 
     // Static vector methods.

@@ -55,19 +55,22 @@ namespace Math
     }
 
     // Set the x value.
-    __inline void SetX(const Type& x) {
+    __inline Vector2& SetX(const Type& x) {
       myX = x;
+      return *this;
     }
 
     // Set the y value.
-    __inline void SetY(const Type& y) {
+    __inline Vector2& SetY(const Type& y) {
       myY = y;
+      return *this;
     }
 
     // Set the x and y value.
-    __inline void Set(const Type& x, const Type& y) {
+    __inline Vector2& Set(const Type& x, const Type& y) {
       myX = x;
       myY = y;
+      return *this;
     }
 
     // Static vector methods.
@@ -80,8 +83,6 @@ namespace Math
     Type myY;
   };
 
-
-  
   template <class Type>
   // Default constructor.
   Vector2<Type>::Vector2<Type>()
@@ -105,7 +106,7 @@ namespace Math
 
   template <class Type>
   // Destructor.
-  Vector2<Type>::Vector2() 
+  Vector2<Type>::~Vector2() 
   {
 
   }

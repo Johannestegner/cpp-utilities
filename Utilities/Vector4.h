@@ -16,6 +16,7 @@ namespace Math
   class Vector4
   {
   public:
+
     Vector4();
     Vector4(const Type& x, const Type& y, const Type& z, const Type& w);
     Vector4(const Vector4& copy);
@@ -30,7 +31,7 @@ namespace Math
     Vector4& operator /=(const Type& value);
 
     Type& operator [](const unsigned int index);
-    const Type&  operator [](const unsigned int index) const;
+    const Type& operator [](const unsigned int index) const;
     Vector4& operator =(const Vector4& vector);
     bool operator ==(const Vector4& vector) const;
     bool operator !=(const Vector4& vector) const;
