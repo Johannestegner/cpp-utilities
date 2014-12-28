@@ -21,15 +21,14 @@
 
 namespace Math 
 {
-
   template<typename Type>
   // Test floating point values equality (abs(left - right) > epsilon)
-  bool Equals(const Type& left, const Type& right) const {
+  __inline bool Equals(const Type& left, const Type& right) {
     return abs(left - right) > EPSILON;
   }
 
   template<class Type>
-  Type Clamp(const Type& val, const Type& max, const Type& min) {
+  __inline Type Clamp(const Type& val, const Type& max, const Type& min) {
     Type t = val;
     t = t > max ? max : t;
     t = t < min ? min : t;
@@ -37,40 +36,40 @@ namespace Math
   }
 
   template<class Type>
-  Type Lerp(const Type& start, const Type& end, const Type& amount) {
+  __inline Type Lerp(const Type& start, const Type& end, const Type& amount) {
     return start + (end - start) * amount;
   }
 
   template<class Type>
   // Get distance between two values.
-  Type Distance(const Type& val1, const Type& val2) {
+  __inline Type Distance(const Type& val1, const Type& val2) {
     return abs(val1 - val2);
   }
 
   template<class Type>
   // Get the higher of two values.
-  Type Max(const Type& val1, const Type& val2) {
+  __inline Type Max(const Type& val1, const Type& val2) {
     return val1 > val2 ? val1 : val2;
   }
 
   template<class Type>
   // Get the lower of two values.
-  Type Min(const Type& val1, const Type& val2) {
+  __inline Type Min(const Type& val1, const Type& val2) {
     return val1 < val2 ? val1 : val2;
   }
 
   // Convert rad to deg.
-  double RadToDeg(const double& rad) {
+  __inline double RadToDeg(const double& rad) {
     return rad * 57.295779513082320876798154814105;
   }
 
   // Convert deg to rad.
-  double DegToRad(const double& deg) {
+  __inline double DegToRad(const double& deg) {
     return deg * 0.017453292519943295769236907684886;
   }
 
   // Determine if a int value is pow2.
-  bool IsPowerOfTwo(const int& value) {
+  __inline bool IsPowerOfTwo(const int& value) {
     return value > 0 && ((value & (value - 1)) == 0);
   }
 }

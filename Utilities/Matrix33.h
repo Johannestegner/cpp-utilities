@@ -31,7 +31,7 @@ namespace Math
     const Vector3& operator [](const unsigned int& index) const;
     Vector3& operator [](const unsigned int& index);
 
-    Matrix33 Transpose();
+    Matrix33 Transpose() const;
     Matrix33& SetIdentity();
     Matrix33& Inverse();
 
@@ -70,8 +70,6 @@ namespace Math
     Vector3<Type> myZ;
   };
 
-  
-
   template <class Type>
   // Default constructor.
   Matrix33<Type>::Matrix33()
@@ -107,6 +105,7 @@ namespace Math
   }
 
   template <class Type>
+  // Destructor.
   Matrix33<Type>::~Matrix33()
   {
 
@@ -115,13 +114,30 @@ namespace Math
   template <class Type>
   Matrix33<Type>& Matrix33<Type>::operator *=(const Matrix33<Type>& matrix)
   {
-    // IMPLEMENT.
+    Type val = 0;
+    Matrix33<Type> temp;
+    for (char x = 0; x < 3; x++) {
+      for (char y = 0; y < 3; y++){
+        for (char z = 0; z < 3; z++) {
+          val += this[y][z] * matrix[z][x];
+        }
+        temp[y][x] = val;
+        val = 0;
+      }
+    }
+    *this = temp;
+    return *this;
   }
   
   template <class Type>
   Matrix33<Type>& Matrix33<Type>::operator *=(const Type& value)
   {
-    // IMPLEMENT.
+    for (unsigned char i = 0; i < 3; i++) {
+      myX[i] *= value;
+      myY[i] *= value;
+      myZ[i] *= value;
+    }
+    return * this;
   }
   
   template <class Type>
@@ -146,7 +162,8 @@ namespace Math
   }
 
   template <class Type>
-  Matrix33<Type> Matrix33<Type>::Transpose()
+  // Transpose ther matrix and return the product.
+  Matrix33<Type> Matrix33<Type>::Transpose() const
   {
     return Matrix33 < Type > { myX[0], myY[0], myZ[0], myX[1], myY[1], myZ[1], myX[2], myY[2], myZ[2] };
   }
@@ -160,9 +177,16 @@ namespace Math
   }
 
   template <class Type>
+  // Invert the matrix.
   Matrix33<Type>& Matrix33<Type>::Inverse()
   {
-    // IMPLEMENT.
+    Matrix33<Type> copy = { *this };
+    for (unsigned char i = 0; i < 3; i++) {
+      for (unsigned char j = 0; j < 3; j++) {
+        this[i][j] = copy[j][i];
+      }
+    }
+    return *this;
   }
 
   template <class Type>

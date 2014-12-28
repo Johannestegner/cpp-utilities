@@ -249,19 +249,18 @@ namespace Math
 
   template<class Type>
   // Vector length.
-  Type Vector3<Type>::Length()
+  Type Vector3<Type>::Length() const
   {
     return sqrt(LengthSquared());
   }
 
   template<class Type>
   // Vector length squared.
-  Type Vector3<Type>::LengthSquared()
+  Type Vector3<Type>::LengthSquared() const
   {
     return (myX * myX) + (myY * myY) + (myZ * myZ);
   }
-
-
+  
   /* Static methods. */
   template<class Type>
   // Get dotproduct of two vectors.

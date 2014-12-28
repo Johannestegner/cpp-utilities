@@ -104,28 +104,28 @@ namespace Math
   
   template<class Type>
   // Default constructor.
-  Vector4<Type>::Vector4<Type>()
+  Vector4<Type>::Vector4()
   {
     Set(0, 0, 0, 0);
   }
 
   template<class Type>
   // Constructor.
-  Vector4<Type>::Vector4<Type>(const Type& x, const Type& y, const Type& z, const Type& w)
+  Vector4<Type>::Vector4(const Type& x, const Type& y, const Type& z, const Type& w)
   {
     Set(x, y, z, w);
   }
 
   template<class Type>
   // Copyconstructor.
-  Vector4<Type>::Vector4<Type>(const Vector4<Type>& copy)
+  Vector4<Type>::Vector4(const Vector4<Type>& copy)
   {
     Set(copy.myX, copy.myY, copy.myZ, copy.myW);
   }
 
   template<class Type>
   // Destructor.
-  Vector4<Type>::~Vector4<Type>()
+  Vector4<Type>::~Vector4()
   {
 
   }

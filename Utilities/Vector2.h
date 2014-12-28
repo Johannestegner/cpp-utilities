@@ -85,7 +85,7 @@ namespace Math
 
   template <class Type>
   // Default constructor.
-  Vector2<Type>::Vector2<Type>()
+  Vector2<Type>::Vector2()
   {
     Set(0, 0);
   }
