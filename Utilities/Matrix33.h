@@ -15,6 +15,7 @@ namespace Math
   // A 3x3 Matrix structure.
   class Matrix33
   {
+  public:
     Matrix33();
     Matrix33(const Matrix33& copy);
     Matrix33(const Vector3 x, const Vector3 y, const Vector3 z);
@@ -34,13 +35,13 @@ namespace Math
     Matrix33& SetIdentity();
     Matrix33& Inverse();
 
-    Matrix33& RotateX(float angle);
-    Matrix33& RotateY(float angle);
-    Matrix33& RotateZ(float angle);
+    Matrix33& SetXRotation(const float& angle);
+    Matrix33& SetYRotation(const float& angle);
+    Matrix33& SetZRotation(const float& angle);
 
-    Matrix33& GetXRotation();
-    Matrix33& GetYRotation();
-    Matrix33& GetZRotation();
+    Matrix33 GetXRotation() const;
+    Matrix33 GetYRotation() const;
+    Matrix33 GetZRotation() const;
 
     Matrix33& Scale(const Type& scale);
 
@@ -54,9 +55,18 @@ namespace Math
       myZ.Set(zX, zY, zZ);
     }
 
+    // Static methods.
+    static Matrix33 Identity();
+    static Matrix33 RotateX(const float& angle);
+    static Matrix33 RotateY(const float& angle);
+    static Matrix33 RotateZ(const float& angle);
+
   private:
+    // [0][0] - [0][1] - [0][2]
     Vector3<Type> myX;
+    // [1][0] - [1][1] - [1][2]
     Vector3<Type> myY;
+    // [2][0] - [2][1] - [2][2]
     Vector3<Type> myZ;
   };
 
@@ -138,62 +148,145 @@ namespace Math
   template <class Type>
   Matrix33<Type> Matrix33<Type>::Transpose()
   {
-    // IMPLEMENT.
+    return Matrix33 < Type > { myX[0], myY[0], myZ[0], myX[1], myY[1], myZ[1], myX[2], myY[2], myZ[2] };
   }
 
   template <class Type>
+  // Set matrix to identity.
   Matrix33<Type>& Matrix33<Type>::SetIdentity()
   {
-
+    this *= Identity();
+    return *this;
   }
 
   template <class Type>
   Matrix33<Type>& Matrix33<Type>::Inverse()
   {
-
+    // IMPLEMENT.
   }
 
   template <class Type>
-  Matrix33<Type>& Matrix33<Type>::RotateX(float angle)
+  // Rotate the X axis of the matrix with given angle.
+  Matrix33<Type>& Matrix33<Type>::SetXRotation(const float& angle)
   {
-
+    this *= RotateX(angle);
+    return *this;
   }
 
   template <class Type>
-  Matrix33<Type>& Matrix33<Type>::RotateY(float angle)
+  // Rotate the Y axis of the matrix with given angle.
+  Matrix33<Type>& Matrix33<Type>::SetYRotation(const float& angle)
   {
-
+    this *= RotateY(angle);
+    return *this;
   }
 
   template <class Type>
-  Matrix33<Type>& Matrix33<Type>::RotateZ(float angle)
+  // Rotate the Z axis of the matrix with given angle.
+  Matrix33<Type>& Matrix33<Type>::SetZRotation(const float& angle)
   {
-
+    this *= RotateZ(angle);
+    return *this;
   }
 
   template <class Type>
-  Matrix33<Type>& Matrix33<Type>::GetXRotation()
+  // Get the X rotation of the matrix.
+  Matrix33<Type> Matrix33<Type>::GetXRotation() const
   {
-
+    return Matrix33 < Type > {
+      1, 0, 0,
+      0, myY[1], myY[2],
+      0, myZ[1], myZ[2]
+    };
   }
 
   template <class Type>
-  Matrix33<Type>& Matrix33<Type>::GetYRotation()
+  // Get the Y rotation of the matrix.
+  Matrix33<Type> Matrix33<Type>::GetYRotation() const
   {
-
+    return Matrix33 < Type > {
+      myX[0], 0, myZ[2],
+      0, 1, 0,
+      myZ[0], 0, myZ[2]
+    };
   }
 
   template <class Type>
-  Matrix33<Type>& Matrix33<Type>::GetZRotation()
+  // Get the Z rotation of the matrix.
+  Matrix33<Type> Matrix33<Type>::GetZRotation() const
   {
-
+    return Matrix33 < Type > {
+      myX[0], myX[1], 0,
+      myY[0], myY[2], 0,
+      0, 0, 1
+    };
   }
 
   template <class Type>
+  // Scale the matrix with given value.
   Matrix33<Type>& Matrix33<Type>::Scale(const Type& scale)
   {
-
+    for (char i = 0; i < 3; i++) {
+      myX[i] *= scale;
+      myY[i] *= scale;
+      myZ[i] *= scale;
+    }
+    return *this;
   }
+
+  /* Static methods. */
+
+  template <class Type>
+  // Get identity matrix:
+  // 1, 0, 0
+  // 0, 1, 0
+  // 0, 0, 1
+  Matrix33<Type> Matrix33<Type>::Identity()
+  {
+    return Matrix33
+    {
+      1, 0, 0,
+      0, 1, 0,
+      0, 0, 1
+    };
+  }
+
+  template <class Type>
+  // Rotates the matrix with given angle (Deg).
+  Matrix33<Type> Matrix33<Type>::RotateX(const float& angle)
+  {
+    angle = DegToRad(angle);
+    return Matrix33 < Type > {
+      1, 0, 0,
+      0, cos(angle), -sin(angle),
+      0, sin(angle), cos(angle)
+    };
+  }
+
+  template <class Type>
+  // Rotates the matrix with given angle (Deg).
+  Matrix33<Type> Matrix33<Type>::RotateY(const float& angle)
+  {
+    angle = DegToRad(angle);
+    return Matrix33 < Type > {
+      cos(angle), 0, sin(angle),
+      0, 1, 0,
+      -sin(angle), 0, cos(angle)
+    };
+  }
+
+  template <class Type>
+  // Rotates the matrix with given angle (Deg).
+  Matrix33<Type> Matrix33<Type>::RotateZ(const float& angle)
+  {
+    angle = DegToRad(angle);
+    return Matrix33 < Type > {
+      cos(angle), -sin(angle), 0,
+      sin(angle), cos(angle), 0,
+      0, 0, 1
+    };
+  }
+
 }
 
 #endif // UTIL_MATRIX_33_H
