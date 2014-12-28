@@ -94,6 +94,7 @@
     <ClCompile Include="Test_Array.cpp" />
     <ClCompile Include="Test_DoublyLinkedList.cpp" />
     <ClCompile Include="Test_List.cpp" />
+    <ClCompile Include="Test_Matrix33.cpp" />
     <ClCompile Include="Test_Queue.cpp" />
     <ClCompile Include="Test_SingleLinkedList.cpp" />
     <ClCompile Include="Test_Stack.cpp" />

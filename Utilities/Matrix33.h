@@ -18,7 +18,7 @@ namespace Math
   public:
     Matrix33();
     Matrix33(const Matrix33& copy);
-    Matrix33(const Vector3 x, const Vector3 y, const Vector3 z);
+    Matrix33(const Vector3<Type>& x, const Vector3<Type>& y, const Vector3<Type>& z);
     Matrix33(const Type& xX, const Type& xY, const Type& xZ,
              const Type& yX, const Type& yY, const Type& yZ,
              const Type& zX, const Type& zY, const Type& zZ);
@@ -46,13 +46,14 @@ namespace Math
     Matrix33& Scale(const Type& scale);
 
     // Set all the matrix values.
-    __inline Set(const Type& xX, const Type& xY, const Type& xZ,
+    __inline Matrix33& Set(const Type& xX, const Type& xY, const Type& xZ,
                  const Type& yX, const Type& yY, const Type& yZ,
                  const Type& zX, const Type& zY, const Type& zZ)
     {
       myX.Set(xX, xY, xZ);
       myY.Set(yX, yY, yZ);
       myZ.Set(zX, zY, zZ);
+      return *this;
     }
 
     // Static methods.
@@ -88,7 +89,7 @@ namespace Math
 
   template <class Type>
   // Constructor.
-  Matrix33<Type>::Matrix33(const Vector3<Type> x, const Vector3<Type> y, const Vector3<Type> z)
+  Matrix33<Type>::Matrix33(const Vector3<Type>& x, const Vector3<Type>& y, const Vector3<Type>& z)
   {
     myX = x;
     myY = y;

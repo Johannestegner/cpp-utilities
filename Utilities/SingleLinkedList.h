@@ -52,12 +52,12 @@ namespace DataStructures
     CountType myCount;
     
     // Fetch a node at index.
-    Node<Type, 2>* GetNodeAt(const unsigned int& index) const {
+    Node<Type, 1>* GetNodeAt(const CountType& index) const {
       assert((index >= 0) && (index < myCount) && "Index out of bounds.");
-      Node<Type, 2>* n = NULL;
+      Node<Type, 1>* n = NULL;
       n = myFirst;
-      for (unsigned int i = 0; i < index; i++) {
-        n = n->GetConnection(CHILD);
+      for (CountType i = 0; i < index; i++) {
+        n = n->GetConnection(0);
       }
       return n;
     }
@@ -87,7 +87,7 @@ namespace DataStructures
   {
     Node<Type, 1>* n = myFirst;
     while (n != NULL) {
-      Node<Type, 1>* tmp = n->GetConnection(CHILD);
+      Node<Type, 1>* tmp = n->GetConnection(0);
       delete n;
       n = tmp;
     }
@@ -124,11 +124,14 @@ namespace DataStructures
   // Insert a object at current index of the list.
   bool SingleLinkedList<Type, CountType>::Insert(const Type& object, const CountType& index)
   {
-    Node<Type, 1>* newNode = new Node<Type, 1>(object);    
+    Node<Type, 1>* newNode = new Node<Type, 1>(object);
     Node<Type, 1>* parent = GetNodeAt(index - 1);
     newNode->SetConnection(0, parent->GetConnection(0));
     parent->SetConnection(0, newNode);
     myCount++;
+    if (parent == myLast) {
+      myLast = newNode;
+    }
     return true;
   }
 
@@ -139,6 +142,8 @@ namespace DataStructures
     Node<Type, 1>* n = new Node<Type, 1>(object);
     if (myFirst != NULL) {
       n->SetConnection(0, myFirst);
+    }
+    if (myLast == NULL) {
       myLast = myFirst;
     }
     myFirst = n;
