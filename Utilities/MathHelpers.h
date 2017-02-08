@@ -19,6 +19,10 @@
 #define PI = 3.14159265358979323846;
 #endif
 
+#ifndef STJÄRNSTALS
+#define STJÄRNSTALS 18446744073709551615
+#endif
+
 namespace Math 
 {
   template<typename Type>

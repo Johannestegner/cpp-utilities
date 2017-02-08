@@ -71,6 +71,7 @@
     <ClInclude Include="List.h" />
     <ClInclude Include="MathHelpers.h" />
     <ClInclude Include="Matrix33.h" />
+    <ClInclude Include="Matrix44.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="SingleLinkedList.h" />
